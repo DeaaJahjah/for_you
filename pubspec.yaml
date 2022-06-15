@@ -41,6 +41,17 @@ dependencies:
   cloud_firestore: ^3.1.11
   firebase_auth: ^3.3.17
 
+   #state management
+  provider: ^6.0.2
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
+
+   # local cache
+  shared_preferences: ^2.0.13
+
+   #UI
+  bottom_navigation_bar: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -78,17 +89,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: Palanquin
+      fonts:
+        - asset: assets/fonts/Palanquin-Regular.ttf
+        - asset: assets/fonts/Palanquin-Bold.ttf
+        - asset: assets/fonts/Palanquin-SemiBold.ttf
+          weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
