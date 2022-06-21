@@ -13,7 +13,7 @@ class UserDbServices {
 
   creatUser(UserModel user, context) async {
     try {
-      await _db.collection('users').doc(user.id).set(user.toJson());
+      await _db.collection('users').doc(userDb!.uid).set(user.toJson());
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
@@ -27,5 +27,16 @@ class UserDbServices {
       final snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  Future<UserModel?> getUser(String id) async {
+    print(id);
+    try {
+      var user = await _db.collection('users').doc(id).get();
+      return UserModel.fromFirestore(user);
+    } on FirebaseException catch (e) {
+      print(e);
+    }
+    return null;
   }
 }

@@ -1,9 +1,5 @@
-import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
-import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:for_you/core/features/auth/screens/sign_up_screen.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
 import 'package:for_you/core/features/screens/post_screen.dart';
 import 'package:for_you/core/features/widgets/category_card.dart';
@@ -14,7 +10,6 @@ import 'package:for_you/core/features/widgets/porduct_card.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
 import 'package:for_you/features/chat/message_screen.dart';
 import 'package:for_you/features/home_screen/models/category.dart';
-import 'package:for_you/features/search/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
@@ -44,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    //FlutterFireAuthServices().signOut(context);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,

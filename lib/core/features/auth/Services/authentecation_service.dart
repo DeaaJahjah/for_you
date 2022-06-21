@@ -52,10 +52,6 @@ class FlutterFireAuthServices {
       var user = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      context
-          .read<AuthSataProvider>()
-          .changeAuthState(newState: AuthState.notSet);
-
       return user;
     } on FirebaseAuthException catch (e) {
       context
