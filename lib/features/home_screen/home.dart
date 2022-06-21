@@ -1,23 +1,33 @@
+import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
+import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:for_you/core/features/auth/screens/sign_up_screen.dart';
+import 'package:for_you/core/features/screens/favourite_screen.dart';
+import 'package:for_you/core/features/screens/post_screen.dart';
 import 'package:for_you/core/features/widgets/category_card.dart';
 import 'package:for_you/core/config/constant/constant.dart';
+import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
+import 'package:for_you/core/features/widgets/drawer_item.dart';
 import 'package:for_you/core/features/widgets/porduct_card.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
+import 'package:for_you/features/chat/message_screen.dart';
 import 'package:for_you/features/home_screen/models/category.dart';
-import 'package:for_you/features/notification/notification_screen.dart';
 import 'package:for_you/features/search/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const String routeName = '/';
+  static const String routeName = '/home_screen';
   HomeScreen({Key? key}) : super(key: key);
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex =0; 
+
+ 
   TextEditingController controller = TextEditingController();
+ bool isSwitched=true;
   List<Category> categories = [
     Category(
         name: 'House', urlImage: 'assets/images/house.png', isSelected: true),
@@ -34,47 +44,24 @@ class _HomeScreenState extends State<HomeScreen> {
         urlImage: 'assets/images/furniture.png',
         isSelected: false)
   ];
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(child: ListView(children: [DrawerHeader(child:Column(children: [Center(
-        child: CircleAvatar(
-   backgroundColor: purple,
-                        radius: 40,
-                        backgroundImage: NetworkImage(''),
-        ),
-      )],)),
-      ListTile(title: Text('item1'),)],)),
-      bottomNavigationBar: BottomNavigationBar( 
-        backgroundColor: white.withOpacity(0.5),
-currentIndex: currentIndex,
-onTap: (index)=>setState(() {
-  currentIndex=index;
-}),
-type: BottomNavigationBarType.fixed ,
-unselectedItemColor: purple.withOpacity(0.5),
-selectedItemColor: purple,
-showUnselectedLabels: false,
-showSelectedLabels: true,
-        items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home),label: 'home'),
-        BottomNavigationBarItem(icon: Icon(Icons.favorite),label: 'favourite'),
-        BottomNavigationBarItem(icon: Icon(Icons.search),label: 'search'),
-        BottomNavigationBarItem(icon: Icon(Icons.person),label: 'profile'),
-      ]),
-      backgroundColor: dark,
-      appBar: AppBar(
+      appBar: AppBar( 
+        centerTitle: true, 
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: Icon(Icons.message),
             onPressed: () {
-              Navigator.of(context).pushNamed(NotificationScreen.routeName);
+              Navigator.of(context).pushNamed(MessageScreen.routeName);
             },
           )
         ],
         backgroundColor: dark,
         elevation: 0.0,
-        centerTitle: true,
         title: Row(
           children: [
             SizedBox(width: 65),
@@ -84,84 +71,190 @@ showSelectedLabels: true,
             ),
             Text(
               'HOME',
-              style: TextStyle(
-                  color: white,
-                  fontFamily: font,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
+              style: appBarTextStyle
             ),
           ],
-        ),
-      ),
-      body: CustomScrollView(slivers: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
-            child: SizedBox(
-                height: 40,
-                child: TextFieldCustom(
-                    text: 'Search',
-                    controller: controller,
-                    icon: Icons.search)),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Text(
-              'Categories',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: font,
-                  color: white,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            height: 120,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => CategoryCard(
-                  name: categories[index].name,
-                  url: categories[index].urlImage,
-                  onTap: () {
-                    for (int i = 0; i < categories.length; i++) {
-                      if (i == index)
-                        categories[i].isSelected = true;
-                      else
-                        categories[i].isSelected = false;
-                      setState(() {});
-                    }
-                  },
-                  isSelected: categories[index].isSelected),
-              itemCount: categories.length,
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            color: dark,
-            height: MediaQuery.of(context).size.height,
-            child: GridView.builder(
-                itemCount: 8,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: 0.7,
-                  crossAxisSpacing: 2,
-                ),
-                itemBuilder: (context, i) => ProductCard(
-                      imageProduct: 'assets/images/product.png',
-                      address: 'Homs',
-                      isFavorite: true,
-                      isNew: true,
-                      price: '100',
+        ),),
+backgroundColor: dark,
+        drawer: Drawer(
+
+          child:   Column(
+          
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 230,
+                    color: purple,
+                    child: DrawerHeader(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            backgroundColor: white,
+                            radius: 45,
+                            backgroundImage: NetworkImage(''),
+                          ),
+                        ),
+                        Text(
+                          'Doaa Alfisal',
+                          style: TextStyle(color: white, fontFamily: font,fontWeight: FontWeight.bold,fontSize: 20),
+                        ),
+                        Text(
+                          'DoaaAlfisal@gmail.com',
+                          style: TextStyle(color: white, fontFamily: font),
+                        )
+                      ],
                     )),
+                  ),
+                   ListTile(
+                title: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DrawerItem(
+                        icon: Icons.favorite, text: 'Favourites', onTap: () {
+                          Navigator.of(context).pushReplacementNamed(FavouriteScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.post_add, text: 'My posts', onTap: () {
+                          Navigator.of(context).pushNamed(PostScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.message, text: 'My messages', onTap: () {
+                          Navigator.of(context).pushNamed(MessageScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.add_box, text: 'Add post', onTap: () {
+                          Navigator.of(context).pushReplacementNamed(FavouriteScreen.routeName);
+                        }),
+                    DrawerItem(icon: Icons.help, text: 'Help', onTap: () {
+                      Navigator.of(context).pushNamed(FavouriteScreen.routeName);
+                    }),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        DrawerItem(
+                            icon: Icons.language_rounded,
+                            text: 'Laguages',
+                            onTap: null),
+
+                             FlutterSwitch(
+                          value: isSwitched,
+                          height: 30,
+                          width: 50,
+                          toggleSize: 20,
+                          borderRadius: 50,
+                          activeColor: white,
+                          inactiveColor: white,
+                          toggleColor: purple,
+                          switchBorder: Border.all(
+                            color: purple,
+                          ),
+                          activeIcon:Text('en',style: TextStyle(color: white)) ,
+                          inactiveIcon: Text('ar',style: TextStyle(color: white)) ,
+                       
+                         
+                          onToggle: (value) {
+                           setState(() {
+                             isSwitched=value;
+                           });
+                          })
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
-        )
-      ]),
+             
+        ),
+      bottomNavigationBar: CustomNavigationBar(index: 2),
+      body: NestedScrollView(
+
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+      
+          SliverAppBar(
+            
+
+      backgroundColor: dark,
+             pinned: false, snap: true,
+             floating: true,
+            
+            toolbarHeight:210,
+      leading: SizedBox.shrink(),
+            flexibleSpace: FlexibleSpaceBar(background: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
+                  child: SizedBox(
+                      height: 40,
+                      child: TextFieldCustom(
+                          text: 'Search',
+                          controller: controller,
+                          icon: Icons.search)),
+                ),
+      
+      Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                'Categories',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: font,
+                    color: white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+      
+       Container(
+              height: 110,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => CategoryCard(
+                    name: categories[index].name,
+                    url: categories[index].urlImage,
+                    onTap: () {
+                      for (int i = 0; i < categories.length; i++) {
+                        if (i == index)
+                          categories[i].isSelected = true;
+                        else
+                          categories[i].isSelected = false;
+                        setState(() {});
+                      }
+                    },
+                    isSelected: categories[index].isSelected),
+                itemCount: categories.length,
+              ),
+            ),
+            ],
+          ),)),
+         
+         
+        
+        
+        ];},
+        body: GridView.builder(
+                  itemCount: 8,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 20,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 2,
+                  ),
+                  itemBuilder: (context, i) => ProductCard(
+                        imageProduct: 'assets/images/product.png',
+                        address: 'Homs',
+                        isFavorite: true,
+                        isNew: true,
+                        price: '100',
+                      )),)
+      
     );
   }
 }
+
+
+  

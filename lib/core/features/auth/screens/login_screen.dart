@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AuthSataProvider>(
       create: (context) => AuthSataProvider(),
-      builder:(context,child) => Scaffold(
+     child: Scaffold(
       backgroundColor: dark,
       body: Center(
         child: ListView(
@@ -51,15 +51,16 @@ class _LoginScreenState extends State<LoginScreen> {
               icon: Icons.lock,
             ),
             SizedBox(height: 30),
+
             Consumer<AuthSataProvider>(
                 builder: (context, state, child) => (state.authState ==
                         AuthState.notSet)
                     ? ElevatedButtonCustom(
+                      color: purple,
                         onPressed: () {
                           if (email.text.isNotEmpty &&
                               password.text.isNotEmpty) {
-                            Provider.of<FlutterFireAuthServices>(context,
-                                    listen: false)
+                          FlutterFireAuthServices()
                                 .signIn(
                                     email: email.text,
                                     password: password.text,

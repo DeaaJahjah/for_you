@@ -6,14 +6,16 @@ class ItemCustom extends StatelessWidget {
   String? address;
   String? type;
   String? price;
-  Function()? onPressed;
+  Function()? onDelete;
+  Function()? onEdit;
   ItemCustom(
       {Key? key,
       this.urlImage,
       this.address,
       this.type,
       this.price,
-      this.onPressed})
+      this.onDelete,
+      this.onEdit})
       : super(key: key);
 
   @override
@@ -48,27 +50,33 @@ class ItemCustom extends StatelessWidget {
         Positioned(
           left: 125,
           top: 20,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(address!,
-                  style:
-                      TextStyle(color: white, fontFamily: font, fontSize: 18)),
-              Text(type!,
-                  style:
-                      TextStyle(color: white, fontFamily: font, fontSize: 18)),
-              Text(price!,
-                  style:
-                      TextStyle(color: white, fontFamily: font, fontSize: 18))
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(address!, style: itemTextStyle),
+                  Text(type!, style: itemTextStyle),
+                  Text(price!, style: itemTextStyle),
+                ],
+              ),
+              SizedBox(width: 45),
+              Column(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.delete, color: white, size: 25),
+                      onPressed: onDelete),
+                  (onEdit != null)
+                      ? IconButton(
+                          icon: Icon(Icons.edit, color: white, size: 25),
+                          onPressed: onEdit)
+                      : SizedBox.shrink()
+                ],
+              )
             ],
           ),
         ),
-        Positioned(
-            top: 40,
-            left: 255,
-            child: IconButton(
-                icon: Icon(Icons.delete, color: white, size: 25),
-                onPressed: onPressed))
       ]),
     );
   }

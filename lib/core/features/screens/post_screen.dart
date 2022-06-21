@@ -1,31 +1,30 @@
+
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
-import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/item_custome.dart';
 
-class FavouriteScreen extends StatefulWidget {
-  static const String routeName = '/favourite_screen';
-  const FavouriteScreen({Key? key}) : super(key: key);
+class PostScreen extends StatefulWidget {
+  static const String routeName = '/post_screen';
+  PostScreen({Key? key}) : super(key: key);
 
   @override
-  State<FavouriteScreen> createState() => _FavouriteScreenState();
+  State<PostScreen> createState() => _PostScreenState();
 }
 
-class _FavouriteScreenState extends State<FavouriteScreen> {
+class _PostScreenState extends State<PostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       bottomNavigationBar: CustomNavigationBar(index: 1),
       backgroundColor: dark,
-      appBar: AppBar(
-          backgroundColor: purple,
+      appBar: AppBar(          backgroundColor: purple,
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            'FAVOURITES',
+            'My post',
             style:appBarTextStyle
-          )),
-      body: ListView(
+          ) ),
+
+          body:   ListView(
         padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
         children: [
           ItemCustom(
@@ -34,13 +33,16 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             type: 'New',
             price: '400',
             onDelete: () {},
+            onEdit: (){},
           ),
           ItemCustom(
             urlImage: 'assets/images/kids.png',
             address: 'Syria/Hama',
             type: 'New',
             price: '1000',
-            onDelete: () {},) 
+            onDelete: () {},
+            onEdit: (){},
+            )
         ],
       ),
     );

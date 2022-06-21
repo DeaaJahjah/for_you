@@ -16,8 +16,8 @@ class FileService {
       return storage.ref(name).getDownloadURL();
     } on FirebaseException catch (e) {
       print(e.toString());
-      Provider.of<AuthSataProvider>(context, listen: false)
-          .changeAuthState(newState: AuthState.notSet);
+      // Provider.of<AuthSataProvider>(context, listen: false)
+      //     .changeAuthState(newState: AuthState.notSet);
       final snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return 'error';

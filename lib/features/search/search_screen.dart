@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
+import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
 import 'package:for_you/features/search/key_word_container.dart';
 
@@ -21,6 +22,8 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    
+       bottomNavigationBar: CustomNavigationBar(index: 3),
         backgroundColor: dark,
         appBar: AppBar(
             backgroundColor: purple,

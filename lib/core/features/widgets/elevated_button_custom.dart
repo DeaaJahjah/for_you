@@ -4,7 +4,8 @@ import 'package:for_you/core/config/constant/constant.dart';
 class ElevatedButtonCustom extends StatelessWidget {
   Function()? onPressed;
   String text;
-  ElevatedButtonCustom({Key? key, required this.onPressed, required this.text})
+  Color color;
+  ElevatedButtonCustom({Key? key, required this.onPressed, required this.text, required this.color})
       : super(key: key);
 
   @override
@@ -14,7 +15,7 @@ class ElevatedButtonCustom extends StatelessWidget {
       child: SizedBox(height: 40,
         child: ElevatedButton(
           
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(purple),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(color),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: 
           BorderRadius.circular(20)))
             ),

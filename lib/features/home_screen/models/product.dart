@@ -1,13 +1,4 @@
 
-
-import 'package:flutter/material.dart';
-
-class Product extends StatelessWidget {
+class Product{
   
-  const Product({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
 }
