@@ -16,9 +16,9 @@ class TextFieldCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       maxLines: maxLine,
-      style: TextStyle(
+      style: const TextStyle(
         color: white,
         fontFamily: font,
       ),
@@ -30,19 +30,33 @@ class TextFieldCustom extends StatelessWidget {
           ),
           isDense: true,
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: purple, width: 1),
+            borderSide: const BorderSide(color: purple, width: 1),
             borderRadius: BorderRadius.circular(20),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: purple, width: 1),
+            borderSide: const BorderSide(color: purple, width: 1),
             borderRadius: BorderRadius.circular(20),
           ),
           labelText: text,
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.red, width: 1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: purple, width: 1),
+            borderRadius: BorderRadius.circular(20),
+          ),
           labelStyle: TextStyle(
               color: white.withOpacity(0.5),
               fontFamily: font,
               fontSize: 16,
               fontWeight: FontWeight.normal)),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Required';
+        }
+        return null;
+      },
     );
   }
 }

@@ -22,15 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AuthSataProvider>(
-      create: (context) => AuthSataProvider(),
-     child: Scaffold(
+    return Scaffold(
       backgroundColor: dark,
       body: Center(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 40),
           children: [
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Image.asset(
@@ -42,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: email,
               icon: Icons.email,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             TextFieldCustom(
@@ -50,44 +48,45 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: password,
               icon: Icons.lock,
             ),
-            SizedBox(height: 30),
-
+            const SizedBox(height: 30),
             Consumer<AuthSataProvider>(
                 builder: (context, state, child) => (state.authState ==
                         AuthState.notSet)
                     ? ElevatedButtonCustom(
-                      color: purple,
+                        color: purple,
                         onPressed: () {
                           if (email.text.isNotEmpty &&
                               password.text.isNotEmpty) {
-                          FlutterFireAuthServices()
-                                .signIn(
-                                    email: email.text,
-                                    password: password.text,
-                                    context: context);
+                            FlutterFireAuthServices().signIn(
+                                email: email.text,
+                                password: password.text,
+                                context: context);
                           } else {
-                            final snakBar = const SnackBar(
+                            const snakBar = SnackBar(
                                 content:
                                     Text('Please enter email and password'));
                             ScaffoldMessenger.of(context).showSnackBar(snakBar);
                           }
                         },
                         text: 'Login')
-                    : const CircularProgressIndicator()),
-            SizedBox(height: 100),
+                    : const Center(
+                        child: CircularProgressIndicator(
+                        color: purple,
+                      ))),
+            const SizedBox(height: 100),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Havent an account?',
                   style:
                       TextStyle(color: white, fontSize: 16, fontFamily: font),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 TextButton(
-                  child: Text('Sign up',
+                  child: const Text('Sign up',
                       style: TextStyle(
                           color: purple,
                           fontSize: 16,
@@ -102,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
-      ));
-  
+    );
   }
 }

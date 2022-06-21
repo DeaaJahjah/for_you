@@ -17,8 +17,8 @@ import 'package:for_you/features/home_screen/models/category.dart';
 import 'package:for_you/features/search/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const String routeName = '/';
-  HomeScreen({Key? key}) : super(key: key);
+  static const String routeName = '/home-screen';
+  const HomeScreen({Key? key}) : super(key: key);
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
           centerTitle: true,
           actions: [
             IconButton(
-              icon: Icon(Icons.message),
+              icon: const Icon(Icons.message),
               onPressed: () {
                 Navigator.of(context).pushNamed(MessageScreen.routeName);
               },
@@ -59,12 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0.0,
           title: Row(
             children: [
-              SizedBox(width: 65),
+              const SizedBox(width: 65),
               Image.asset(
                 'assets/images/logo.png',
                 scale: 4,
               ),
-              Text('HOME', style: appBarTextStyle),
+              const Text('HOME', style: appBarTextStyle),
             ],
           ),
         ),
@@ -79,9 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: DrawerHeader(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+                  children: const [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: CircleAvatar(
                         backgroundColor: white,
                         radius: 45,
@@ -160,10 +160,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             switchBorder: Border.all(
                               color: purple,
                             ),
-                            activeIcon:
-                                Text('en', style: TextStyle(color: white)),
-                            inactiveIcon:
-                                Text('ar', style: TextStyle(color: white)),
+                            activeIcon: const Text('en',
+                                style: TextStyle(color: white)),
+                            inactiveIcon: const Text('ar',
+                                style: TextStyle(color: white)),
                             onToggle: (value) {
                               setState(() {
                                 isSwitched = value;
@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   snap: true,
                   floating: true,
                   toolbarHeight: 210,
-                  leading: SizedBox.shrink(),
+                  leading: const SizedBox.shrink(),
                   flexibleSpace: FlexibleSpaceBar(
                     background: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,8 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   controller: controller,
                                   icon: Icons.search)),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
+                        const Padding(
+                          padding: EdgeInsets.all(8),
                           child: Text(
                             'Categories',
                             style: TextStyle(
@@ -212,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           height: 110,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
@@ -221,10 +221,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 url: categories[index].urlImage,
                                 onTap: () {
                                   for (int i = 0; i < categories.length; i++) {
-                                    if (i == index)
+                                    if (i == index) {
                                       categories[i].isSelected = true;
-                                    else
+                                    } else {
                                       categories[i].isSelected = false;
+                                    }
                                     setState(() {});
                                   }
                                 },
