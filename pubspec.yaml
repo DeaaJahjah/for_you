@@ -62,7 +62,11 @@ dependencies:
 
   #tools
   image_picker: ^0.8.5+3
-  path: ^1.8.0 
+  path: ^1.8.0
+
+  #chat
+  stream_chat_flutter_core: ^4.0.0
+  cached_network_image: ^3.2.1
  
 dev_dependencies:
   flutter_test:
