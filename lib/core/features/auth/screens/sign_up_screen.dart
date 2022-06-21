@@ -15,7 +15,7 @@ import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
-  static const String routeName = '/';
+  static const String routeName = '/sign_up';
   SignUpScreen({Key? key}) : super(key: key);
 
   @override

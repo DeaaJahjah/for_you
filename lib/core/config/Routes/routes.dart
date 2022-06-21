@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/features/auth/screens/login_screen.dart';
 import 'package:for_you/core/features/auth/screens/sign_up_screen.dart';
 import 'package:for_you/core/features/screens/add_post.dart';
+import 'package:for_you/core/features/screens/details_screen.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
 import 'package:for_you/core/features/screens/post_screen.dart';
 import 'package:for_you/features/chat/message_screen.dart';
@@ -33,6 +34,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: ((_) => ProfileScreen() ));
     case AddPostScreen.routeName:
       return MaterialPageRoute(builder: ((_) => AddPostScreen() ));
+      case DetailsScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => DetailsScreen() ));
   }
 
   return null;
