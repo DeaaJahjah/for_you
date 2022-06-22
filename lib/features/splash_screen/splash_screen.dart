@@ -22,7 +22,7 @@ class SplashScreen extends StatelessWidget {
         final client = StreamChatCore.of(context).client;
         await client.connectUser(
             User(id: context.userUid!), context.userToken!);
-
+        print('unRead messages ${client.state.totalUnreadCount}');
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } else {
         Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);

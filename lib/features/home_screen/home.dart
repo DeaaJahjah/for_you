@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:for_you/core/config/constant/keys.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
 import 'package:for_you/core/features/screens/post_screen.dart';
 import 'package:for_you/core/features/widgets/category_card.dart';
@@ -39,52 +38,56 @@ class _HomeScreenState extends State<HomeScreen> {
         urlImage: 'assets/images/furniture.png',
         isSelected: false)
   ];
+
   @override
   Widget build(BuildContext context) {
     //FlutterFireAuthServices().signOut(context);
-    final client = StreamChatClient(streamKey);
+
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           actions: [
-            // StreamBuilder<int>(
-            //     stream: client.state.totalUnreadCountStream,
-            //     builder: (context, snapshot) {
-            //       if (snapshot.hasData) {
-            //         print(snapshot.data.toString());
-            //         return Stack(
-            //           children: [
-            //             IconButton(
-            //               icon: const Icon(Icons.message),
-            //               onPressed: () {
-            //                 Navigator.of(context)
-            //                     .pushNamed(MessagesScreen.routeName);
-            //               },
-            //             ),
-            //             CircleAvatar(
-            //               backgroundColor: purple,
-            //               radius: 10,
-            //               child: Text(
-            //                 snapshot.data.toString(),
-            //                 style: const TextStyle(color: white, fontSize: 8),
-            //               ),
-            //             )
-            //           ],
-            //         );
-            //       }
-            //       if (snapshot.connectionState == ConnectionState.waiting) {
-            //         return const Center(
-            //           child: CircularProgressIndicator(color: purple),
-            //         );
-            //       }
-            //       return const SizedBox.shrink();
-            //     })
-            IconButton(
-              icon: const Icon(Icons.message),
-              onPressed: () {
-                Navigator.of(context).pushNamed(MessagesScreen.routeName);
-              },
-            )
+            StreamBuilder<int>(
+                stream: StreamChatCore.of(context)
+                    .client
+                    .state
+                    .totalUnreadCountStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Stack(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.message),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(MessagesScreen.routeName);
+                          },
+                        ),
+                        if (snapshot.data != 0)
+                          CircleAvatar(
+                            backgroundColor: purple,
+                            radius: 10,
+                            child: Text(
+                              snapshot.data.toString(),
+                              style: const TextStyle(color: white, fontSize: 8),
+                            ),
+                          )
+                      ],
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: purple),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                })
+            // IconButton(
+            //   icon: const Icon(Icons.message),
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed(MessagesScreen.routeName);
+            //   },
+            // )
           ],
           backgroundColor: dark,
           elevation: 0.0,

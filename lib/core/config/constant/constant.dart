@@ -23,17 +23,17 @@ const TextStyle style2 = TextStyle(
     color: white, fontFamily: font, fontSize: 14, fontWeight: FontWeight.bold);
 
 StreamChatThemeData streamChatTheme = StreamChatThemeData(
-  colorTheme: StreamColorTheme.dark(
-      accentPrimary: purple, appBg: dark, barsBg: dark, overlayDark: purple),
-  messageInputTheme: const StreamMessageInputThemeData(
-    actionButtonColor: purple,
-    sendButtonColor: purple,
-  ),
-  otherMessageTheme:
-      const StreamMessageThemeData(messageBackgroundColor: purple),
-  channelListViewTheme:
-      const StreamChannelListViewThemeData(backgroundColor: dark),
-);
+    colorTheme: StreamColorTheme.dark(
+        accentPrimary: purple, appBg: dark, barsBg: dark, overlayDark: purple),
+    messageInputTheme: const StreamMessageInputThemeData(
+      actionButtonColor: purple,
+      sendButtonColor: purple,
+    ),
+    otherMessageTheme:
+        const StreamMessageThemeData(messageBackgroundColor: purple),
+    channelListViewTheme:
+        const StreamChannelListViewThemeData(backgroundColor: dark),
+    channelHeaderTheme: const StreamChannelHeaderThemeData(color: purple));
 
 var categories = {
   'Select': ['Select'],
