@@ -9,7 +9,10 @@ import 'package:for_you/core/config/extensions/firebase.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String routeName = '/';
-  const SplashScreen({Key? key}) : super(key: key);
+
+  const SplashScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

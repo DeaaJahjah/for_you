@@ -5,7 +5,8 @@ import 'package:for_you/core/features/screens/add_post.dart';
 import 'package:for_you/core/features/screens/details_screen.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
 import 'package:for_you/core/features/screens/post_screen.dart';
-import 'package:for_you/features/chat/message_screen.dart';
+import 'package:for_you/features/chat/messages_screen.dart';
+
 import 'package:for_you/features/home_screen/home.dart';
 import 'package:for_you/features/profile/profile_screen.dart';
 
@@ -15,27 +16,27 @@ import 'package:for_you/features/splash_screen/splash_screen.dart';
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case SplashScreen.routeName:
-      return MaterialPageRoute(builder: (_) =>  SplashScreen());
-      case LoginScreen.routeName:
-      return MaterialPageRoute(builder: ((_) =>  LoginScreen() ));
-   case SignUpScreen.routeName:
-      return MaterialPageRoute(builder: ((_) =>  SignUpScreen() ));
-       case HomeScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => HomeScreen() ));
-       case SearchScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => SearchScreen() ));
-      case FavouriteScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => FavouriteScreen() ));
-        case MessageScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => MessageScreen() ));
+      return MaterialPageRoute(builder: (_) => const SplashScreen());
+    case LoginScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => const LoginScreen()));
+    case SignUpScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => const SignUpScreen()));
+    case HomeScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => const HomeScreen()));
+    case SearchScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => const SearchScreen()));
+    case FavouriteScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => const FavouriteScreen()));
+    case MessagesScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => MessagesScreen()));
     case PostScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => PostScreen() ));
+      return MaterialPageRoute(builder: ((_) => PostScreen()));
     case ProfileScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => ProfileScreen() ));
+      return MaterialPageRoute(builder: ((_) => const ProfileScreen()));
     case AddPostScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => AddPostScreen() ));
-      case DetailsScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => DetailsScreen() ));
+      return MaterialPageRoute(builder: ((_) => AddPostScreen()));
+    case DetailsScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => DetailsScreen()));
   }
 
   return null;
