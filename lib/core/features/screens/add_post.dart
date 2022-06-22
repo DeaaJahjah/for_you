@@ -1,13 +1,27 @@
+import 'dart:io';
+
 import 'package:currency_picker/currency_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:for_you/core/config/constant/constant.dart';
+import 'package:for_you/core/config/enums/enums.dart';
+import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
+import 'package:for_you/core/features/auth/Services/file_services.dart';
+import 'package:for_you/core/features/auth/models/post.dart';
+import 'package:for_you/core/features/screens/post_db_service.dart';
+import 'package:for_you/core/features/widgets/category_card.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/drop_down_custom.dart';
 import 'package:for_you/core/features/widgets/elevated_button_custom.dart';
+import 'package:for_you/core/features/widgets/picked_images_widget.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
+import 'package:for_you/features/home_screen/home.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 class AddPostScreen extends StatefulWidget {
   static const String routeName = '/add_post';
@@ -29,6 +43,23 @@ class _AddPostScreenState extends State<AddPostScreen> {
   String selectedCategory2 = 'Select';
   String symbol='Ls' ;
   bool visible = false;
+  String postType='New';
+ List< XFile> pickedimages=[];
+  _pickImage() async {
+    final picker = ImagePicker();
+    try {
+      var picked = await picker.pickMultiImage();
+      if(picked!.isNotEmpty){
+        pickedimages.addAll(picked);
+        print(picked.length);
+          print(pickedimages.length);
+         setState(() {});
+      }
+     
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,117 +81,126 @@ class _AddPostScreenState extends State<AddPostScreen> {
         scrollDirection: Axis.vertical,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(50, 0, 50, 10),
-            child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  border: Border.all(color: purple),
-                  color: dark,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  Icons.add_photo_alternate_outlined,
-                  color: white,
-                  size: 50,
-                )),
+            padding: const EdgeInsets.fromLTRB(100, 0, 100, 10),
+            child: InkWell(
+              onTap: () {
+                _pickImage();
+                setState(() {
+                  
+                });
+              },
+              child: Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: purple),
+                    color: dark,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Icon(
+                    Icons.add_photo_alternate_outlined,
+                    color: white,
+                    size: 30,
+                  )),
+            ),
           ),
+          (pickedimages.isNotEmpty)?
+          Container(
+            width: MediaQuery.of(context).size.width,
+          height:100 ,
+            child: ListView.builder(scrollDirection: Axis.horizontal,
+            itemBuilder: (context,i){
+              return PickedImagesWidget(
+                url:File(pickedimages[i].path),onTap: (){
+                  pickedimages.removeAt(i);
+                  setState(() {
+                    
+                  });
+                },
+              );         
+            },
+            itemCount:pickedimages.length ,
+             ),
+          ):
+        SizedBox.shrink(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 10, bottom: 20, top: 10),
-                child: Row(
-                  children: [
-                    Text('Available', style: style1),
-                    SizedBox(width: 10),
-                    FlutterSwitch(
-                        value: isSwitched,
-                        height: 30,
-                        width: 50,
-                        toggleSize: 20,
-                        borderRadius: 50,
-                        activeColor: dark,
-                        inactiveColor: white,
-                        toggleColor: purple,
-                        switchBorder: Border.all(
-                          color: purple,
-                        ),
-                        onToggle: (value) {
-                          setState(() {
-                            isSwitched = value;
-                          });
-                        }),
-                  ],
+                padding: const EdgeInsets.only(right: 10, bottom: 20, top: 0),
+                child: Expanded(flex: 1,
+                  child: Row(
+                    children: [
+                      Text('Available', style: style1),
+                      SizedBox(width: 10),
+                      FlutterSwitch(
+                          value: isSwitched,
+                          height: 30,
+                          width: 50,
+                          toggleSize: 20,
+                          borderRadius: 50,
+                          activeColor: dark,
+                          inactiveColor: white,
+                          toggleColor: purple,
+                          switchBorder: Border.all(
+                            color: purple,
+                          ),
+                          onToggle: (value) {
+                
+                            setState(() {
+                              isSwitched = value;
+                            });
+                          }),
+                    ],
+                  ),
                 ),
               ),
-              DropDownCustom(
-                categories: category1,
-                selectedItem: selectedCategory1,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedCategory1 = newValue!;
-                    selectedCategory2 = categories[selectedCategory1]!.first;
-                    visible = true;
-                  });
-                },
+              Expanded(flex: 2,
+                child: DropDownCustom(
+                  categories: category1,
+                  selectedItem: selectedCategory1,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedCategory1 = newValue!;
+                      selectedCategory2 = categories[selectedCategory1]!.first;
+                      visible = true;
+                    });
+                  },
+                ),
               )
             ],
           ),
+         SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text('Type', style: style1),
+              Expanded(flex: 1,
+                child: DropDownCustom(
+                        categories: typies,
+                        selectedItem: postType,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            postType = newValue!;
+                          });
+                        },
+                      ),
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Radio(
-                      value: true,
-                      groupValue: true,
-                      onChanged: (va) {},
-                      activeColor: purple,
-                      autofocus: false,
-                      fillColor: MaterialStateProperty.all(purple)),
-                  Text(
-                    'New',
-                    style:style2
-                  ),
-                ],
-              ),
+           
               (visible)
-                  ? DropDownCustom(
-                      categories: category2,
-                      selectedItem: selectedCategory2,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedCategory2 = newValue!;
-                        });
-                      },
-                    )
+                  ? Expanded(
+                    child: DropDownCustom(
+                        categories: category2,
+                        selectedItem: selectedCategory2,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedCategory2 = newValue!;
+                          });
+                        },
+                      ),
+                  )
                   : SizedBox.shrink()
             ],
           ),
-          Row(
-            children: [
-              Radio(
-                  value: false,
-                  groupValue: true,
-                  onChanged: (va) {},
-                  activeColor: purple,
-                  autofocus: false,
-                  fillColor: MaterialStateProperty.all(purple)),
-              Text(
-                'Used',
-                style:style2
-              ),
-            ],
-          ),
+         
           SizedBox(height: 20),
           Row(
             children: [
@@ -245,9 +285,33 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ],
           ),
           SizedBox(height: 20),
-          Center(
-            child: ElevatedButtonCustom(
-                text: 'Add', color: purple, onPressed: () {}),
+          Consumer<AuthSataProvider>(
+
+            builder:(context, value, child) {
+              
+            return Center(
+              child:(value.authState==AuthState.notSet)?
+               ElevatedButtonCustom(
+                  text: 'Add', color: purple, onPressed: ()async {
+
+          Provider.of<AuthSataProvider>(context,listen: false).changeAuthState(newState: AuthState.waiting) ;
+                    List <String>keywords=tagsController.text.split('#').toList();
+          String uid=FirebaseAuth.instance.currentUser!.uid;
+            List <String>images = await  FileService().uploadeimages(pickedimages,context);     
+               
+               Post post=Post(address: addressController.text,category1: selectedCategory1,
+               category2: selectedCategory2,description: descController.text,isAvailable: isSwitched,
+               price: priceController.text,symbol: symbol,type: postType,userId: uid,keywrds: keywords,photos: images
+               );
+                   await PostDbService().addPost(post, context);
+          
+           Provider.of<AuthSataProvider>(context,listen: false).changeAuthState(newState: AuthState.notSet) ;
+            SnackBar snackBar = SnackBar(content: Text('Added successfully'));
+            Navigator.of(context).pushNamed(HomeScreen.routeName);
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                  }):CircularProgressIndicator(color: purple,)
+            );}
           )
         ],
       ),

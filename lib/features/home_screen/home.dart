@@ -1,6 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:for_you/core/features/auth/Services/authentecation_service.dart';
+import 'package:for_you/core/features/auth/Services/user_db_services.dart';
+import 'package:for_you/core/features/auth/models/post.dart';
+import 'package:for_you/core/features/auth/models/user_model.dart';
+import 'package:for_you/core/features/screens/add_post.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
+import 'package:for_you/core/features/screens/help_screen.dart';
+import 'package:for_you/core/features/screens/post_db_service.dart';
 import 'package:for_you/core/features/screens/post_screen.dart';
 import 'package:for_you/core/features/widgets/category_card.dart';
 import 'package:for_you/core/config/constant/constant.dart';
@@ -39,11 +47,14 @@ class _HomeScreenState extends State<HomeScreen> {
         isSelected: false)
   ];
 
+  String uid = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
-    //FlutterFireAuthServices().signOut(context);
+    // FlutterFireAuthServices().signOut(context);
 
     return Scaffold(
+        backgroundColor: dark,
+        bottomNavigationBar: CustomNavigationBar(index: 2),
         appBar: AppBar(
           centerTitle: true,
           actions: [
@@ -102,45 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        backgroundColor: dark,
-        drawer: Drawer(
-          child: Column(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 230,
-                color: purple,
-                child: DrawerHeader(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        backgroundColor: white,
-                        radius: 45,
-                        backgroundImage: NetworkImage(''),
-                      ),
-                    ),
-                    Text(
-                      'Doaa Alfisal',
-                      style: TextStyle(
-                          color: white,
-                          fontFamily: font,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
-                    Text(
-                      'DoaaAlfisal@gmail.com',
-                      style: TextStyle(color: white, fontFamily: font),
-                    )
-                  ],
-                )),
-              ),
-              ListTile(
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        drawer: FutureBuilder<UserModel?>(
+          future: UserDbServices().getUser(uid),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Drawer(
+                child: Column(
                   children: [
+
                     DrawerItem(
                         icon: Icons.favorite,
                         text: 'Favourites',
@@ -193,25 +173,120 @@ class _HomeScreenState extends State<HomeScreen> {
                             toggleColor: purple,
                             switchBorder: Border.all(
                               color: purple,
+
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 230,
+                      color: purple,
+                      child: DrawerHeader(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              backgroundColor: white,
+                              radius: 45,
+                              backgroundImage:
+                                  NetworkImage(snapshot.data!.imgUrl),
+
                             ),
-                            activeIcon: const Text('en',
-                                style: TextStyle(color: white)),
-                            inactiveIcon: const Text('ar',
-                                style: TextStyle(color: white)),
-                            onToggle: (value) {
-                              setState(() {
-                                isSwitched = value;
-                              });
-                            })
-                      ],
-                    )
+                          ),
+                          Text(
+                            snapshot.data!.name,
+                            style: TextStyle(
+                                color: white,
+                                fontFamily: font,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                          Text(
+                            snapshot.data!.email,
+                            style: TextStyle(color: white, fontFamily: font),
+                          )
+                        ],
+                      )),
+                    ),
+                    ListTile(
+                      title: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          DrawerItem(
+                              icon: Icons.favorite,
+                              text: 'Favourites',
+                              onTap: () {
+                                Navigator.of(context).pushReplacementNamed(
+                                    FavouriteScreen.routeName);
+                              }),
+                          DrawerItem(
+                              icon: Icons.post_add,
+                              text: 'My posts',
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(PostScreen.routeName);
+                              }),
+                          DrawerItem(
+                              icon: Icons.message,
+                              text: 'My messages',
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(MessageScreen.routeName);
+                              }),
+                          DrawerItem(
+                              icon: Icons.add_box,
+                              text: 'Add post',
+                              onTap: () {
+                                Navigator.of(context).pushReplacementNamed(
+                                    AddPostScreen.routeName);
+                              }),
+                          DrawerItem(
+                              icon: Icons.help,
+                              text: 'Help',
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(HelpScreen.routeName);
+                              }),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              DrawerItem(
+                                  icon: Icons.language_rounded,
+                                  text: 'Laguages',
+                                  onTap: null),
+                              FlutterSwitch(
+                                  value: isSwitched,
+                                  height: 30,
+                                  width: 50,
+                                  toggleSize: 20,
+                                  borderRadius: 50,
+                                  activeColor: white,
+                                  inactiveColor: white,
+                                  toggleColor: purple,
+                                  switchBorder: Border.all(
+                                    color: purple,
+                                  ),
+                                  activeIcon: const Text('en',
+                                      style: TextStyle(color: white)),
+                                  inactiveIcon: const Text('ar',
+                                      style: TextStyle(color: white)),
+                                  onToggle: (value) {
+                                    setState(() {
+                                      isSwitched = value;
+                                    });
+                                  })
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
+              );
+            } else {
+              return SizedBox.shrink();
+            }
+          },
         ),
-        bottomNavigationBar: CustomNavigationBar(index: 2),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
@@ -272,21 +347,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
             ];
           },
-          body: GridView.builder(
-              itemCount: 8,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 20,
-                childAspectRatio: 0.7,
-                crossAxisSpacing: 2,
-              ),
-              itemBuilder: (context, i) => ProductCard(
-                    imageProduct: 'assets/images/product.png',
-                    address: 'Homs',
-                    isFavorite: true,
-                    isNew: true,
-                    price: '100',
-                  )),
+          body: FutureBuilder<List<Post>> (
+            future: PostDbService().getPosts(),
+            builder:(context,snapshot){
+if(snapshot.hasData){
+
+              List<Post>posts =snapshot.data!;
+              return  GridView.builder(
+                itemCount:posts.length ,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 20,
+                  childAspectRatio: 0.7,
+                  crossAxisSpacing: 2,
+                ),
+                itemBuilder: (context, i) => ProductCard(
+                  postId: posts[i].id! ,
+                      imageProduct: posts[i].photos!.first,
+                      address: posts[i].address,
+                      isFavorite: false,
+                      type: posts[i].type,
+                      price: posts[i].price,
+                    ));
+            }
+            if(snapshot.connectionState==ConnectionState.waiting){
+            return  Center(child: CircularProgressIndicator(color: purple),);
+            }
+            return SizedBox.shrink();
+            }
+          ),
         ));
   }
 }

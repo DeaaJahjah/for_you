@@ -4,6 +4,7 @@ import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/Services/authentecation_service.dart';
 import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
+import 'package:for_you/core/features/screens/add_post.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/elevated_button_custom.dart';
 
@@ -125,7 +126,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             backgroundColor: MaterialStateProperty.all(
                                 dark.withOpacity(0.2)),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                          //  Navigator.of(context).pushNamed(AddPostScreen.routeName);
+                          },
                           child: Row(
                             children: const [
                               Icon(

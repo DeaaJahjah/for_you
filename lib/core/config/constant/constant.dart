@@ -7,11 +7,13 @@ const Color white = Color(0xffffffff);
 
 const String font = 'Palanquin';
 
-const TextStyle navigationTextStyle =
+const TextStyle textStyle =
     TextStyle(color: white, fontFamily: font, fontSize: 16);
+
 
 const TextStyle itemTextStyle =
     TextStyle(color: white, fontFamily: font, fontSize: 18);
+
 
 const TextStyle appBarTextStyle = TextStyle(
     color: white, fontFamily: font, fontWeight: FontWeight.bold, fontSize: 22);
@@ -48,3 +50,5 @@ var categories = {
   'school supplies': ['Select'],
   'books': ['Select'],
 };
+
+ List<String> typies = ['New', 'Used'];

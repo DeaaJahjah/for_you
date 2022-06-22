@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 
 class CategoryCard extends StatelessWidget {
-  String name;
+  String? name;
   String url ;
   Function() onTap;
-  bool isSelected;
-  CategoryCard({Key? key,required this.name,required this.url,required this.onTap,required this.isSelected}) : super(key: key);
+  bool? isSelected;
+  CategoryCard({Key? key,this.name,required this.url,required this.onTap,this.isSelected}) : super(key: key);
 
   
   @override
@@ -26,12 +26,12 @@ class CategoryCard extends StatelessWidget {
               child: Image.asset(url,fit: BoxFit.fill,),
               width: 70,height: 70,
               decoration: BoxDecoration(
-               border: Border.all(color:(isSelected)? purple :  dark ,width: 3),
+               border: Border.all(color:(isSelected!)? purple :  dark ,width: 3),
             borderRadius: BorderRadius.circular(8),
               ),
             ),   
         
-           Text(name,style: TextStyle(color: white,fontFamily: font,fontSize: 14,),),
+           Text(name!,style: TextStyle(color: white,fontFamily: font,fontSize: 14,),),
         ],
       ),
     );
