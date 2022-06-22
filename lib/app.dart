@@ -3,7 +3,7 @@ import 'package:for_you/core/config/Routes/routes.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class App extends StatelessWidget {
   final StreamChatClient client;
@@ -30,7 +30,8 @@ class App extends StatelessWidget {
             scaffoldBackgroundColor: dark,
             appBarTheme: const AppBarTheme(backgroundColor: purple)),
         builder: (context, child) {
-          return StreamChatCore(
+          return StreamChat(
+            streamChatThemeData: streamChatTheme,
             client: client,
             child: ChannelsBloc(
               child: UsersBloc(
