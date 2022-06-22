@@ -16,8 +16,9 @@ import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/drawer_item.dart';
 import 'package:for_you/core/features/widgets/porduct_card.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
-import 'package:for_you/features/chat/message_screen.dart';
+import 'package:for_you/features/chat/messages_screen.dart';
 import 'package:for_you/features/home_screen/models/category.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
@@ -45,22 +46,59 @@ class _HomeScreenState extends State<HomeScreen> {
         urlImage: 'assets/images/furniture.png',
         isSelected: false)
   ];
+
   String uid = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     // FlutterFireAuthServices().signOut(context);
+
     return Scaffold(
         backgroundColor: dark,
         bottomNavigationBar: CustomNavigationBar(index: 2),
         appBar: AppBar(
           centerTitle: true,
           actions: [
-            IconButton(
-              icon: const Icon(Icons.message),
-              onPressed: () {
-                Navigator.of(context).pushNamed(MessageScreen.routeName);
-              },
-            )
+            StreamBuilder<int>(
+                stream: StreamChatCore.of(context)
+                    .client
+                    .state
+                    .totalUnreadCountStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Stack(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.message),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(MessagesScreen.routeName);
+                          },
+                        ),
+                        if (snapshot.data != 0)
+                          CircleAvatar(
+                            backgroundColor: purple,
+                            radius: 10,
+                            child: Text(
+                              snapshot.data.toString(),
+                              style: const TextStyle(color: white, fontSize: 8),
+                            ),
+                          )
+                      ],
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: purple),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                })
+            // IconButton(
+            //   icon: const Icon(Icons.message),
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed(MessagesScreen.routeName);
+            //   },
+            // )
           ],
           backgroundColor: dark,
           elevation: 0.0,
@@ -82,6 +120,60 @@ class _HomeScreenState extends State<HomeScreen> {
               return Drawer(
                 child: Column(
                   children: [
+
+                    DrawerItem(
+                        icon: Icons.favorite,
+                        text: 'Favourites',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(FavouriteScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.post_add,
+                        text: 'My posts',
+                        onTap: () {
+                          Navigator.of(context).pushNamed(PostScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.message,
+                        text: 'My messages',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(MessagesScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.add_box,
+                        text: 'Add post',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(FavouriteScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.help,
+                        text: 'Help',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(FavouriteScreen.routeName);
+                        }),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        DrawerItem(
+                            icon: Icons.language_rounded,
+                            text: 'Laguages',
+                            onTap: null),
+                        FlutterSwitch(
+                            value: isSwitched,
+                            height: 30,
+                            width: 50,
+                            toggleSize: 20,
+                            borderRadius: 50,
+                            activeColor: white,
+                            inactiveColor: white,
+                            toggleColor: purple,
+                            switchBorder: Border.all(
+                              color: purple,
+
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 230,
@@ -97,6 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               radius: 45,
                               backgroundImage:
                                   NetworkImage(snapshot.data!.imgUrl),
+
                             ),
                           ),
                           Text(

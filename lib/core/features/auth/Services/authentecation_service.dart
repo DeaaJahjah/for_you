@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/config/enums/enums.dart';
 import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
 import 'package:for_you/core/features/auth/screens/login_screen.dart';
-import 'package:for_you/features/home_screen/home.dart';
 import 'package:provider/provider.dart';
 
 class FlutterFireAuthServices {
@@ -16,7 +15,7 @@ class FlutterFireAuthServices {
     Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
   }
 
-  Future<void> signIn(
+  Future<UserCredential?> signIn(
       {required String email,
       required String password,
       required BuildContext context}) async {
@@ -24,13 +23,12 @@ class FlutterFireAuthServices {
         .changeAuthState(newState: AuthState.waiting);
 
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential credential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
+      return credential;
     } on FirebaseAuthException catch (e) {
       context
           .read<AuthSataProvider>()
@@ -39,6 +37,7 @@ class FlutterFireAuthServices {
       ScaffoldMessenger.of(context).showSnackBar(snakBar);
       print(e.message);
     }
+    return null;
   }
 
   Future<UserCredential?> signUp(

@@ -1,23 +1,32 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/screens/login_screen.dart';
 import 'package:for_you/features/home_screen/home.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
+import 'package:for_you/core/config/extensions/firebase.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String routeName = '/';
-  const SplashScreen({Key? key}) : super(key: key);
+
+  const SplashScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var state = FirebaseAuth.instance;
-    var user = state.currentUser;
-    Timer(const Duration(seconds: 2), () {
-      (user != null)
-          ? Navigator.of(context).pushReplacementNamed(HomeScreen.routeName)
-          : Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+    Timer(const Duration(seconds: 2), () async {
+      if (context.logedInUser != null) {
+        //connect user to caht sdk
+        final client = StreamChatCore.of(context).client;
+        await client.connectUser(
+            User(id: context.userUid!), context.userToken!);
+        print('unRead messages ${client.state.totalUnreadCount}');
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      } else {
+        Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+      }
     });
     return Scaffold(
       backgroundColor: dark,
