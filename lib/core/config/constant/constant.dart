@@ -10,10 +10,8 @@ const String font = 'Palanquin';
 const TextStyle textStyle =
     TextStyle(color: white, fontFamily: font, fontSize: 16);
 
-
 const TextStyle itemTextStyle =
     TextStyle(color: white, fontFamily: font, fontSize: 18);
-
 
 const TextStyle appBarTextStyle = TextStyle(
     color: white, fontFamily: font, fontWeight: FontWeight.bold, fontSize: 22);
@@ -25,17 +23,17 @@ const TextStyle style2 = TextStyle(
     color: white, fontFamily: font, fontSize: 14, fontWeight: FontWeight.bold);
 
 StreamChatThemeData streamChatTheme = StreamChatThemeData(
-    colorTheme: StreamColorTheme.dark(
-        accentPrimary: purple, appBg: dark, barsBg: dark, overlayDark: purple),
-    messageInputTheme: const StreamMessageInputThemeData(
-      actionButtonColor: purple,
-      sendButtonColor: purple,
-    ),
-    otherMessageTheme:
-        const StreamMessageThemeData(messageBackgroundColor: purple),
-    channelListViewTheme:
-        const StreamChannelListViewThemeData(backgroundColor: dark),
-    channelHeaderTheme: const StreamChannelHeaderThemeData(color: purple));
+  colorTheme: StreamColorTheme.dark(
+      accentPrimary: purple, appBg: dark, barsBg: dark, overlayDark: purple),
+  messageInputTheme: const StreamMessageInputThemeData(
+    actionButtonColor: purple,
+    sendButtonColor: purple,
+  ),
+  otherMessageTheme:
+      const StreamMessageThemeData(messageBackgroundColor: purple),
+  channelListViewTheme:
+      const StreamChannelListViewThemeData(backgroundColor: dark),
+);
 
 var categories = {
   'Select': ['Select'],
@@ -51,4 +49,4 @@ var categories = {
   'books': ['Select'],
 };
 
- List<String> typies = ['New', 'Used'];
+List<String> typies = ['New', 'Used'];
