@@ -118,170 +118,41 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Drawer(
-                child: Column(
-                  children: [
-
-                    DrawerItem(
-                        icon: Icons.favorite,
-                        text: 'Favourites',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed(FavouriteScreen.routeName);
-                        }),
-                    DrawerItem(
-                        icon: Icons.post_add,
-                        text: 'My posts',
-                        onTap: () {
-                          Navigator.of(context).pushNamed(PostScreen.routeName);
-                        }),
-                    DrawerItem(
-                        icon: Icons.message,
-                        text: 'My messages',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(MessagesScreen.routeName);
-                        }),
-                    DrawerItem(
-                        icon: Icons.add_box,
-                        text: 'Add post',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed(FavouriteScreen.routeName);
-                        }),
-                    DrawerItem(
-                        icon: Icons.help,
-                        text: 'Help',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(FavouriteScreen.routeName);
-                        }),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        DrawerItem(
-                            icon: Icons.language_rounded,
-                            text: 'Laguages',
-                            onTap: null),
-                        FlutterSwitch(
-                            value: isSwitched,
-                            height: 30,
-                            width: 50,
-                            toggleSize: 20,
-                            borderRadius: 50,
-                            activeColor: white,
-                            inactiveColor: white,
-                            toggleColor: purple,
-                            switchBorder: Border.all(
-                              color: purple,
-
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 230,
-                      color: purple,
-                      child: DrawerHeader(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: CircleAvatar(
-                              backgroundColor: white,
-                              radius: 45,
-                              backgroundImage:
-                                  NetworkImage(snapshot.data!.imgUrl),
-
-                            ),
-                          ),
-                          Text(
-                            snapshot.data!.name,
-                            style: TextStyle(
-                                color: white,
-                                fontFamily: font,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                          Text(
-                            snapshot.data!.email,
-                            style: TextStyle(color: white, fontFamily: font),
-                          )
-                        ],
-                      )),
-                    ),
-                    ListTile(
-                      title: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          DrawerItem(
-                              icon: Icons.favorite,
-                              text: 'Favourites',
-                              onTap: () {
-                                Navigator.of(context).pushReplacementNamed(
-                                    FavouriteScreen.routeName);
-                              }),
-                          DrawerItem(
-                              icon: Icons.post_add,
-                              text: 'My posts',
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(PostScreen.routeName);
-                              }),
-                          DrawerItem(
-                              icon: Icons.message,
-                              text: 'My messages',
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(MessageScreen.routeName);
-                              }),
-                          DrawerItem(
-                              icon: Icons.add_box,
-                              text: 'Add post',
-                              onTap: () {
-                                Navigator.of(context).pushReplacementNamed(
-                                    AddPostScreen.routeName);
-                              }),
-                          DrawerItem(
-                              icon: Icons.help,
-                              text: 'Help',
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(HelpScreen.routeName);
-                              }),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              DrawerItem(
-                                  icon: Icons.language_rounded,
-                                  text: 'Laguages',
-                                  onTap: null),
-                              FlutterSwitch(
-                                  value: isSwitched,
-                                  height: 30,
-                                  width: 50,
-                                  toggleSize: 20,
-                                  borderRadius: 50,
-                                  activeColor: white,
-                                  inactiveColor: white,
-                                  toggleColor: purple,
-                                  switchBorder: Border.all(
-                                    color: purple,
-                                  ),
-                                  activeIcon: const Text('en',
-                                      style: TextStyle(color: white)),
-                                  inactiveIcon: const Text('ar',
-                                      style: TextStyle(color: white)),
-                                  onToggle: (value) {
-                                    setState(() {
-                                      isSwitched = value;
-                                    });
-                                  })
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
+                  child: Column(children: [
+                DrawerItem(
+                    icon: Icons.favorite,
+                    text: 'Favourites',
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(FavouriteScreen.routeName);
+                    }),
+                DrawerItem(
+                    icon: Icons.post_add,
+                    text: 'My posts',
+                    onTap: () {
+                      Navigator.of(context).pushNamed(PostScreen.routeName);
+                    }),
+                DrawerItem(
+                    icon: Icons.message,
+                    text: 'My messages',
+                    onTap: () {
+                      Navigator.of(context).pushNamed(MessagesScreen.routeName);
+                    }),
+                DrawerItem(
+                    icon: Icons.add_box,
+                    text: 'Add post',
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(FavouriteScreen.routeName);
+                    }),
+                DrawerItem(
+                    icon: Icons.help,
+                    text: 'Help',
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(FavouriteScreen.routeName);
+                    })
+              ]));
             } else {
               return SizedBox.shrink();
             }
@@ -347,35 +218,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
             ];
           },
-          body: FutureBuilder<List<Post>> (
-            future: PostDbService().getPosts(),
-            builder:(context,snapshot){
-if(snapshot.hasData){
-
-              List<Post>posts =snapshot.data!;
-              return  GridView.builder(
-                itemCount:posts.length ,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: 0.7,
-                  crossAxisSpacing: 2,
-                ),
-                itemBuilder: (context, i) => ProductCard(
-                  postId: posts[i].id! ,
-                      imageProduct: posts[i].photos!.first,
-                      address: posts[i].address,
-                      isFavorite: false,
-                      type: posts[i].type,
-                      price: posts[i].price,
-                    ));
-            }
-            if(snapshot.connectionState==ConnectionState.waiting){
-            return  Center(child: CircularProgressIndicator(color: purple),);
-            }
-            return SizedBox.shrink();
-            }
-          ),
+          body: FutureBuilder<List<Post>>(
+              future: PostDbService().getPosts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Post> posts = snapshot.data!;
+                  return GridView.builder(
+                      itemCount: posts.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 20,
+                        childAspectRatio: 0.7,
+                        crossAxisSpacing: 2,
+                      ),
+                      itemBuilder: (context, i) => ProductCard(
+                            postId: posts[i].id!,
+                            imageProduct: posts[i].photos!.first,
+                            address: posts[i].address,
+                            isFavorite: false,
+                            type: posts[i].type,
+                            price: posts[i].price,
+                          ));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(color: purple),
+                  );
+                }
+                return SizedBox.shrink();
+              }),
         ));
   }
 }
