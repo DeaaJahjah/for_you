@@ -19,12 +19,12 @@ class CustomNavigationBar extends StatefulWidget {
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   List<TabItem> items = [
-    TabItem(Icons.add, 'Add', white, labelStyle: navigationTextStyle),
+    TabItem(Icons.add, 'Add', white, labelStyle: textStyle),
     TabItem(Icons.favorite, 'Favourite', white,
-        labelStyle: navigationTextStyle),
-    TabItem(Icons.home, 'Home', white, labelStyle: navigationTextStyle),
-    TabItem(Icons.search, 'Search', white, labelStyle: navigationTextStyle),
-    TabItem(Icons.person, 'Profile', white, labelStyle: navigationTextStyle),
+        labelStyle: textStyle),
+    TabItem(Icons.home, 'Home', white, labelStyle: textStyle),
+    TabItem(Icons.search, 'Search', white, labelStyle: textStyle),
+    TabItem(Icons.person, 'Profile', white, labelStyle: textStyle),
   ];
   
   CircularBottomNavigationController? navigationController;

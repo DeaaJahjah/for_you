@@ -4,6 +4,7 @@ import 'package:for_you/core/features/auth/screens/sign_up_screen.dart';
 import 'package:for_you/core/features/screens/add_post.dart';
 import 'package:for_you/core/features/screens/details_screen.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
+import 'package:for_you/core/features/screens/help_screen.dart';
 import 'package:for_you/core/features/screens/post_screen.dart';
 import 'package:for_you/features/chat/message_screen.dart';
 import 'package:for_you/features/home_screen/home.dart';
@@ -36,6 +37,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: ((_) => AddPostScreen() ));
       case DetailsScreen.routeName:
       return MaterialPageRoute(builder: ((_) => DetailsScreen() ));
+        case HelpScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => HelpScreen() ));
   }
 
   return null;

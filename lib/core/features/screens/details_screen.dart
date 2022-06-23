@@ -1,11 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
+import 'package:for_you/core/features/auth/models/post.dart';
+import 'package:for_you/core/features/screens/post_db_service.dart';
 import 'package:for_you/core/features/widgets/text_row.dart';
 
 class DetailsScreen extends StatefulWidget {
   static const String routeName = 'details_screen';
-  DetailsScreen({Key? key}) : super(key: key);
+  String? postId;
+  DetailsScreen({Key? key ,this.postId}) : super(key: key);
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
@@ -17,24 +20,36 @@ class _DetailsScreenState extends State<DetailsScreen> {
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
-    final List<Widget> imageSliders = imgList
+    
+
+    return Scaffold(
+      backgroundColor: dark,
+      body: SafeArea(
+        child:FutureBuilder<Post>(
+          future: PostDbService().getPostById(widget.postId!),
+          builder: (context,snapshot){
+
+
+if(snapshot.hasData){
+
+  final List<Widget> imageSliders = snapshot.data!.photos!
         .map((item) => Container(
               height: 200,
               margin: EdgeInsets.all(5.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
+                child: Image.network(
                   item,
                   fit: BoxFit.cover,
                 ),
               ),
             ))
         .toList();
-
-    return Scaffold(
-      backgroundColor: dark,
-      body: SafeArea(
-        child: Stack(
+ String keywords='';
+snapshot.data!.keywrds!.forEach((element) {
+  keywords+=' '+element;
+ });
+            return Stack(
           children: [
             Column(
               children: [
@@ -74,15 +89,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     );
                   }).toList(),
                 ),
-                TextRow(title: 'Adress ', data: 'data'),
-                TextRow(title: 'Type ', data: 'data'),
-                TextRow(title: 'Categories ', data: 'data'),
-                TextRow(title: 'Keywords ', data: 'data'),
+                TextRow(title: 'Adress ', data: snapshot.data!.address),
+                TextRow(title: 'Type ', data:  snapshot.data!.type),
+                TextRow(title: 'Categories ', data: snapshot.data!.category1+' - '+ snapshot.data!.category2),
+                TextRow(title: 'Keywords ', data:  keywords),
                 TextRow(title: 'Description ', data: ''),
                 TextRow(
                     title: '',
                     data:
-                        'DescriptionDDescriptionDDescriptionDDescriptionD escriptionDescr iptionDescriptionDescrip tionDescript ionDescription'),
+                         snapshot.data!.description),
                 Padding(
                   padding: const EdgeInsets.only(left: 10,top: 10),
                   child: Align(alignment: Alignment.centerLeft,
@@ -124,7 +139,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
               ),
             ),
           ],
-        ),
+        );
+}
+
+ if(snapshot.connectionState==ConnectionState.waiting){
+            return  Center(child: CircularProgressIndicator(color: purple),);
+            }
+            return SizedBox.shrink();
+            
+            },)
       ),
     );
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
+import 'package:for_you/core/features/widgets/drop_down_custom.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
-import 'package:for_you/features/search/key_word_container.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = '/search_screen';
@@ -15,15 +15,21 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController controller = TextEditingController();
-  List<String> texts=[
-    'T-shirt cotton', 'Trousers','Car ford','Ring','Cups','Baby clothes','Big houses',
-    'Clothes used','Winter clothes',
-  ];
+  List<String> category = categories.keys.toList();
+ 
+  String selectedtype='';
+   String category1='';
+@override
+  void initState() {
+    selectedtype = typies[0];
+ category1 = category[0];
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
-    
-       bottomNavigationBar: CustomNavigationBar(index: 3),
+        bottomNavigationBar: CustomNavigationBar(index: 3),
         backgroundColor: dark,
         appBar: AppBar(
             backgroundColor: purple,
@@ -37,8 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 22),
             )),
-        body: 
-        CustomScrollView(
+        body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
@@ -46,93 +51,59 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: SizedBox(
                     height: 40,
                     child: TextFieldCustom(
-                        text: 'Search',
+                        text: 'What Are You looking for?',
                         controller: controller,
                         icon: Icons.search)),
               ),
             ),
-            SliverToBoxAdapter(child: Divider(thickness: 0.5,color: purple)),
-        
+     
             SliverToBoxAdapter(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                
+                children: [
+                  DropDownCustom(
+                
+                    categories: typies,
+                    selectedItem: selectedtype,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedtype = newValue!;
+                      });
+                    },
+                  ),
+                  DropDownCustom(
+                    categories: category,
+                    selectedItem: category1,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        category1 = newValue!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+                   SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Text(
                   'Key words',
-                  style: TextStyle(
-                      fontFamily: font,
-                      color: white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                  style: appBarTextStyle
                 ),
               ),
             ),
-
- SliverToBoxAdapter(
-          child: Container(
-            
-      padding: EdgeInsets.all(8),
-            color: dark,
-            height: MediaQuery.of(context).size.height,
-            child: GridView.builder(
-                itemCount: texts.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 1.7,
-                  crossAxisSpacing: 10,
-                ),
-                itemBuilder: (context, i) => KeyWordContainer(
-                     text: texts[i],
-                    )),
-          ),
-        )
-
-            //          Row(
-             
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     KeyWordContainer(text: 'T-shirt cotton'),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     KeyWordContainer(text: 'Trousers'),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     KeyWordContainer(text: 'Car ford'),
-            //   ],
-            // ),
-            // SizedBox(height:8),
-            //  Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     KeyWordContainer(text: 'Ring'),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     KeyWordContainer(text: 'Cups'),
-            //      SizedBox(
-            //       width: 10,
-            //     ),
-            //        KeyWordContainer(text: 'Baby clothes'),
-               
-            //   ],
-            // ),
-            //  SizedBox(height:8),
-            //  Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     KeyWordContainer(text: 'Big houses'),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     KeyWordContainer(text: 'Clothes used'),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     KeyWordContainer(text: 'Winter clothes'),
-            //   ],
-            // ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
+                child: SizedBox(
+                    height: 40,
+                    child: TextFieldCustom(
+                        text: 'Ex: #Clothes #PC',
+                        controller: controller,
+                        icon: Icons.search)),
+              ),  
+            )
           ],
         ));
   }

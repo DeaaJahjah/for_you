@@ -56,9 +56,9 @@ class ItemCustom extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(address!, style: itemTextStyle),
-                  Text(type!, style: itemTextStyle),
-                  Text(price!, style: itemTextStyle),
+                  Text(address!, style: textStyle),
+                  Text(type!, style:textStyle),
+                  Text(price!, style: textStyle),
                 ],
               ),
               SizedBox(width: 45),

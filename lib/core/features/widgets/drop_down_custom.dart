@@ -21,8 +21,8 @@ class _DropDownCustomState extends State<DropDownCustom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
-      width: 110,
+      height: 40,
+     // width: 120,
       decoration: BoxDecoration(
         border: Border.all(color: purple),
         borderRadius: BorderRadius.circular(15),
@@ -33,17 +33,19 @@ class _DropDownCustomState extends State<DropDownCustom> {
           dropdownColor: white,
           elevation: 10,
           iconEnabledColor: purple,
-          style: const TextStyle(
-              color: purple, fontFamily: font, fontWeight: FontWeight.bold),
+          style:style1,
           alignment: AlignmentDirectional.center,
           focusColor: purple,
-          value: widget.selectedItem,
+          value: widget.selectedItem,      
           isDense: true,
           onChanged: widget.onChanged,
           items: widget.categories.map((String items) {
             return DropdownMenuItem(
               value: items,
-              child: Text(items),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(items),
+              ),
             );
           }).toList(),
         ),

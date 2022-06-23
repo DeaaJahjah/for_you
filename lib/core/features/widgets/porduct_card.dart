@@ -5,24 +5,24 @@ import 'package:for_you/core/features/screens/details_screen.dart';
 class ProductCard extends StatelessWidget {
   bool isFavorite;
   String imageProduct;
-  bool isNew;
+  String type;
   String price;
   String address;
+  String postId;
   ProductCard(
       {Key? key,
       required this.imageProduct,
       required this.isFavorite,
-      required this.isNew,
+      required this.type,
       required this.address,
-      required this.price})
+      required this.price,required this.postId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.of(context).pushNamed(DetailsScreen.routeName);
-      },
+Navigator.of(context).push(MaterialPageRoute(builder: (context)=>DetailsScreen(postId: postId,)));},
       child: Stack(
         children: [
           Container(
@@ -46,7 +46,7 @@ class ProductCard extends StatelessWidget {
             child: Container(
               width: 140,
               height: 140,
-              child: Image.asset(
+              child: Image.network(
                 imageProduct,
                 fit: BoxFit.fill,
               ),
@@ -69,21 +69,14 @@ class ProductCard extends StatelessWidget {
                   style: TextStyle(color: white, fontFamily: font),
                 ),
                 SizedBox(width: 50),
-                (isNew)
-                    ? Text(
-                        'New',
+               Text(
+                        type,
                         style: TextStyle(
                             color: white,
                             fontFamily: font,
                             fontWeight: FontWeight.bold),
                       )
-                    : Text(
-                        'Used',
-                        style: TextStyle(
-                            color: white,
-                            fontFamily: font,
-                            fontWeight: FontWeight.bold),
-                      )
+                 
               ],
             ),
           ),
