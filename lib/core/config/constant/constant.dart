@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:for_you/features/home_screen/models/category.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 const Color purple = Color(0xff976ACA);
@@ -50,3 +51,18 @@ var categories = {
 };
 
 List<String> typies = ['New', 'Used'];
+List<Category> categoriesHome = [
+  Category(
+      name: 'House', urlImage: 'assets/images/house.png', isSelected: true),
+  Category(name: 'Kids', urlImage: 'assets/images/kids.png', isSelected: false),
+  Category(
+      name: 'Sport', urlImage: 'assets/images/sport.png', isSelected: false),
+  Category(
+      name: 'Furniture',
+      urlImage: 'assets/images/furniture.png',
+      isSelected: false),
+  Category(
+      name: 'Furniture',
+      urlImage: 'assets/images/furniture.png',
+      isSelected: false)
+];

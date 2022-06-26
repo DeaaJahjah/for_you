@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/Services/authentecation_service.dart';
+import 'package:for_you/core/features/auth/Services/post_db_service.dart';
 import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
-import 'package:for_you/core/features/screens/add_post.dart';
+import 'package:for_you/core/features/screens/my_posts_screen.dart';
+import 'package:for_you/core/features/screens/update_profile_screen.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/elevated_button_custom.dart';
 
@@ -98,26 +100,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             backgroundColor: MaterialStateProperty.all(
                                 dark.withOpacity(0.2)),
                           ),
-                          onPressed: () {},
-                          child: Row(
-                            children: const [
-                              CircleAvatar(
-                                backgroundColor: dark,
-                                radius: 10,
-                                child:
-                                    Text('2', style: TextStyle(color: white)),
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Posts',
-                                style: TextStyle(
-                                    color: dark,
-                                    fontFamily: font,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          )),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(MyPostsScreen.routeName);
+                          },
+                          child: FutureBuilder<int>(
+                              future: PostDbService().myPostCount(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  int length = snapshot.data!;
+                                  return Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: dark,
+                                        radius: 10,
+                                        child: Text(length.toString(),
+                                            style:
+                                                const TextStyle(color: white)),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Text(
+                                        'Posts',
+                                        style: TextStyle(
+                                            color: dark,
+                                            fontFamily: font,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  );
+                                }
+                                return const Center(
+                                  child:
+                                      CircularProgressIndicator(color: purple),
+                                );
+                              })),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(40, 0, 40, 15),
@@ -127,7 +144,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 dark.withOpacity(0.2)),
                           ),
                           onPressed: () {
-                          //  Navigator.of(context).pushNamed(AddPostScreen.routeName);
+                            Navigator.of(context).pushNamed(
+                                UpdateProfileScreen.routeName,
+                                arguments: snapshot.data!);
                           },
                           child: Row(
                             children: const [

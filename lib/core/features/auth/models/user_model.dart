@@ -1,28 +1,32 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 
 part 'user_model.g.dart';
 
 @JsonSerializable()
-class UserModel{
+class UserModel {
   String? id;
-final String name;
-final String email;
-final String password;
-final String address;
-@JsonKey(name: 'img_url')
-final String imgUrl;
-List<String>?favourites;
+  final String name;
+  final String email;
+  final String password;
+  final String address;
+  @JsonKey(name: 'img_url')
+  final String imgUrl;
+  List<String>? favourites;
 
-  UserModel({this.id, required this.name,required this.email,required this.password,required this.address,required this.imgUrl,this.favourites});
+  UserModel(
+      {this.id,
+      required this.name,
+      required this.email,
+      required this.password,
+      required this.address,
+      required this.imgUrl,
+      this.favourites});
 
- factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
   factory UserModel.fromFirestore(DocumentSnapshot documentSnapshot) {
-   
     UserModel userModel =
         UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
 
@@ -32,5 +36,10 @@ List<String>?favourites;
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
-
+  isFavouritePost(String id) {
+    if (favourites == null) {
+      return false;
+    }
+    return favourites!.contains(id);
+  }
 }

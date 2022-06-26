@@ -3,9 +3,12 @@ import 'package:for_you/core/features/auth/screens/login_screen.dart';
 import 'package:for_you/core/features/auth/screens/sign_up_screen.dart';
 import 'package:for_you/core/features/screens/add_post.dart';
 import 'package:for_you/core/features/screens/details_screen.dart';
+import 'package:for_you/core/features/screens/edit_post_screen.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
 import 'package:for_you/core/features/screens/help_screen.dart';
-import 'package:for_you/core/features/screens/post_screen.dart';
+import 'package:for_you/core/features/screens/my_posts_screen.dart';
+import 'package:for_you/core/features/screens/update_profile_screen.dart';
+
 import 'package:for_you/features/chat/messages_screen.dart';
 
 import 'package:for_you/features/home_screen/home.dart';
@@ -29,18 +32,26 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case FavouriteScreen.routeName:
       return MaterialPageRoute(builder: ((_) => const FavouriteScreen()));
     case MessagesScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => MessagesScreen()));
-    case PostScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => PostScreen()));
+      return MaterialPageRoute(builder: ((_) => const MessagesScreen()));
+    case MyPostsScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => const MyPostsScreen()));
     case ProfileScreen.routeName:
       return MaterialPageRoute(builder: ((_) => const ProfileScreen()));
     case AddPostScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => AddPostScreen()));
-    
-      case DetailsScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => DetailsScreen() ));
-        case HelpScreen.routeName:
-      return MaterialPageRoute(builder: ((_) => HelpScreen() ));
+      return MaterialPageRoute(builder: ((_) => const AddPostScreen()));
+
+    case DetailsScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => DetailsScreen()));
+
+    case EditPostScreen.routeName:
+      return MaterialPageRoute(
+          builder: ((_) => const EditPostScreen()), settings: settings);
+    case UpdateProfileScreen.routeName:
+      return MaterialPageRoute(
+          builder: ((_) => const UpdateProfileScreen()), settings: settings);
+
+    case HelpScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => const HelpScreen()));
   }
 
   return null;

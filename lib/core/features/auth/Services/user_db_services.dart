@@ -10,31 +10,31 @@ import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
 class UserDbServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  var userDb = auth.FirebaseAuth.instance.currentUser;
+  var firebaseUser = auth.FirebaseAuth.instance.currentUser;
 
   creatUser(UserModel user, context) async {
     try {
       /// Create user documnet
-      await _db.collection('users').doc(userDb!.uid).set(user.toJson());
+      await _db.collection('users').doc(firebaseUser!.uid).set(user.toJson());
 
       /// Create user in Stream Chat
       final client = StreamChatCore.of(context).client;
 
       ///generate token id for this user
-      var token = client.devToken(userDb!.uid);
+      var token = client.devToken(firebaseUser!.uid);
 
       /// save the token as a display name
       /// and update user photo
       List<Future<void>> futures = [
-        userDb!.updateDisplayName(token.rawValue),
-        if (user.imgUrl != null) userDb!.updatePhotoURL(user.imgUrl),
+        firebaseUser!.updateDisplayName(token.rawValue),
+        if (user.imgUrl != null) firebaseUser!.updatePhotoURL(user.imgUrl),
       ];
       await Future.wait(futures);
 
       /// connect user to [Stream SDK]
       await client.connectUser(
         User(
-          id: userDb!.uid,
+          id: firebaseUser!.uid,
           name: user.name,
           image: user.imgUrl,
         ),
@@ -56,7 +56,6 @@ class UserDbServices {
   }
 
   Future<UserModel?> getUser(String id) async {
-    print(id);
     try {
       var user = await _db.collection('users').doc(id).get();
       return UserModel.fromFirestore(user);
@@ -64,5 +63,31 @@ class UserDbServices {
       print(e);
     }
     return null;
+  }
+
+  //upate user
+  Future<void> updateUser(UserModel user) async {
+    await _db.collection('users').doc(firebaseUser!.uid).update(user.toJson());
+  }
+
+  addToFivourites(String id) async {
+    try {
+      await _db.collection('users').doc(firebaseUser!.uid).update({
+        'favourites': FieldValue.arrayUnion([id])
+      });
+    } on FirebaseException catch (e) {
+      print(e);
+    }
+  }
+
+  // remove from favourites
+  removeFromFavourites(String id) async {
+    try {
+      await _db.collection('users').doc(firebaseUser!.uid).update({
+        'favourites': FieldValue.arrayRemove([id])
+      });
+    } on FirebaseException catch (e) {
+      print(e);
+    }
   }
 }

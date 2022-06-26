@@ -1,15 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
-import 'package:for_you/core/features/auth/Services/authentecation_service.dart';
 import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
-import 'package:for_you/core/features/screens/add_post.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
-import 'package:for_you/core/features/screens/help_screen.dart';
-import 'package:for_you/core/features/screens/post_db_service.dart';
-import 'package:for_you/core/features/screens/post_screen.dart';
+import 'package:for_you/core/features/auth/Services/post_db_service.dart';
+import 'package:for_you/core/features/screens/my_posts_screen.dart';
 import 'package:for_you/core/features/widgets/category_card.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
@@ -17,7 +13,6 @@ import 'package:for_you/core/features/widgets/drawer_item.dart';
 import 'package:for_you/core/features/widgets/porduct_card.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
 import 'package:for_you/features/chat/messages_screen.dart';
-import 'package:for_you/features/home_screen/models/category.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,24 +25,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController controller = TextEditingController();
   bool isSwitched = true;
-  List<Category> categories = [
-    Category(
-        name: 'House', urlImage: 'assets/images/house.png', isSelected: true),
-    Category(
-        name: 'Kids', urlImage: 'assets/images/kids.png', isSelected: false),
-    Category(
-        name: 'Sport', urlImage: 'assets/images/sport.png', isSelected: false),
-    Category(
-        name: 'Furniture',
-        urlImage: 'assets/images/furniture.png',
-        isSelected: false),
-    Category(
-        name: 'Furniture',
-        urlImage: 'assets/images/furniture.png',
-        isSelected: false)
-  ];
+  bool loading = true;
+  UserModel? userModel;
 
   String uid = FirebaseAuth.instance.currentUser!.uid;
+  @override
+  void initState() {
+    UserDbServices().getUser(uid).then((value) {
+      setState(() {
+        userModel = value;
+        loading = false;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // FlutterFireAuthServices().signOut(context);
@@ -93,12 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return const SizedBox.shrink();
                 })
-            // IconButton(
-            //   icon: const Icon(Icons.message),
-            //   onPressed: () {
-            //     Navigator.of(context).pushNamed(MessagesScreen.routeName);
-            //   },
-            // )
           ],
           backgroundColor: dark,
           elevation: 0.0,
@@ -130,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icons.post_add,
                     text: 'My posts',
                     onTap: () {
-                      Navigator.of(context).pushNamed(PostScreen.routeName);
+                      Navigator.of(context).pushNamed(MyPostsScreen.routeName);
                     }),
                 DrawerItem(
                     icon: Icons.message,
@@ -154,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     })
               ]));
             } else {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
           },
         ),
@@ -197,20 +183,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) => CategoryCard(
-                                name: categories[index].name,
-                                url: categories[index].urlImage,
+                                name: categoriesHome[index].name,
+                                url: categoriesHome[index].urlImage,
                                 onTap: () {
-                                  for (int i = 0; i < categories.length; i++) {
+                                  for (int i = 0;
+                                      i < categoriesHome.length;
+                                      i++) {
                                     if (i == index) {
-                                      categories[i].isSelected = true;
+                                      categoriesHome[i].isSelected = true;
                                     } else {
-                                      categories[i].isSelected = false;
+                                      categoriesHome[i].isSelected = false;
                                     }
                                     setState(() {});
                                   }
                                 },
-                                isSelected: categories[index].isSelected),
-                            itemCount: categories.length,
+                                isSelected: categoriesHome[index].isSelected),
+                            itemCount: categoriesHome.length,
                           ),
                         ),
                       ],
@@ -218,36 +206,51 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
             ];
           },
-          body: FutureBuilder<List<Post>>(
-              future: PostDbService().getPosts(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<Post> posts = snapshot.data!;
-                  return GridView.builder(
-                      itemCount: posts.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 20,
-                        childAspectRatio: 0.7,
-                        crossAxisSpacing: 2,
-                      ),
-                      itemBuilder: (context, i) => ProductCard(
-                            postId: posts[i].id!,
-                            imageProduct: posts[i].photos!.first,
-                            address: posts[i].address,
-                            isFavorite: false,
-                            type: posts[i].type,
-                            price: posts[i].price,
-                          ));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(color: purple),
-                  );
-                }
-                return SizedBox.shrink();
-              }),
+          body: (!loading)
+              ? StreamBuilder<List<Post>>(
+                  stream: PostDbService().getPosts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Post> posts = snapshot.data!;
+                      return GridView.builder(
+                          itemCount: posts.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            childAspectRatio: 0.7,
+                            crossAxisSpacing: 2,
+                          ),
+                          itemBuilder: (context, i) => ProductCard(
+                                postId: posts[i].id!,
+                                imageProduct: posts[i].photos!.first,
+                                address: posts[i].address,
+                                isFavorite:
+                                    userModel!.isFavouritePost(posts[i].id!),
+                                type: posts[i].type,
+                                price: posts[i].price,
+                                onPressed: () async {
+                                  bool state = false;
+                                  if (userModel!
+                                      .isFavouritePost(posts[i].id!)) {
+                                    await UserDbServices()
+                                        .removeFromFavourites(posts[i].id!);
+                                  } else {
+                                    await UserDbServices()
+                                        .addToFivourites(posts[i].id!);
+                                    state = true;
+                                  }
+                                },
+                              ));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(color: purple),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  })
+              : const Center(child: CircularProgressIndicator(color: purple)),
         ));
   }
 }

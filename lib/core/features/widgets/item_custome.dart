@@ -41,37 +41,37 @@ class ItemCustom extends StatelessWidget {
         Positioned(
           left: 10,
           bottom: 10,
-          child: Container(
+          child: SizedBox(
             width: 100,
             height: 100,
-            child: Image.asset(urlImage!, fit: BoxFit.fill),
+            child: Image.network(urlImage!, fit: BoxFit.fill),
           ),
         ),
         Positioned(
           left: 125,
           top: 20,
           child: Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(address!, style: textStyle),
-                  Text(type!, style:textStyle),
+                  Text(type!, style: textStyle),
                   Text(price!, style: textStyle),
                 ],
               ),
-              SizedBox(width: 45),
+              const SizedBox(width: 45),
               Column(
                 children: [
                   IconButton(
-                      icon: Icon(Icons.delete, color: white, size: 25),
+                      icon: const Icon(Icons.delete, color: white, size: 25),
                       onPressed: onDelete),
                   (onEdit != null)
                       ? IconButton(
-                          icon: Icon(Icons.edit, color: white, size: 25),
+                          icon: const Icon(Icons.edit, color: white, size: 25),
                           onPressed: onEdit)
-                      : SizedBox.shrink()
+                      : const SizedBox.shrink()
                 ],
               )
             ],

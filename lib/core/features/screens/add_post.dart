@@ -2,15 +2,13 @@ import 'dart:io';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/config/enums/enums.dart';
 import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
 import 'package:for_you/core/features/auth/Services/file_services.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
-import 'package:for_you/core/features/screens/post_db_service.dart';
-import 'package:for_you/core/features/widgets/category_card.dart';
+import 'package:for_you/core/features/auth/Services/post_db_service.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/drop_down_custom.dart';
 import 'package:for_you/core/features/widgets/elevated_button_custom.dart';
@@ -18,13 +16,11 @@ import 'package:for_you/core/features/widgets/picked_images_widget.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
 import 'package:for_you/features/home_screen/home.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 
 class AddPostScreen extends StatefulWidget {
   static const String routeName = '/add_post';
-  AddPostScreen({Key? key}) : super(key: key);
+  const AddPostScreen({Key? key}) : super(key: key);
   @override
   State<AddPostScreen> createState() => _AddPostScreenState();
 }
@@ -40,21 +36,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
   List<String> category2 = [];
   String selectedCategory1 = 'Select';
   String selectedCategory2 = 'Select';
-  String symbol='Ls' ;
+  String symbol = 'Ls';
   bool visible = false;
-  String postType='New';
- List< XFile> pickedimages=[];
+  String postType = 'New';
+  List<XFile> pickedimages = [];
   _pickImage() async {
     final picker = ImagePicker();
     try {
       var picked = await picker.pickMultiImage();
-      if(picked!.isNotEmpty){
+      if (picked!.isNotEmpty) {
         pickedimages.addAll(picked);
         print(picked.length);
-          print(pickedimages.length);
-         setState(() {});
+        print(pickedimages.length);
+        setState(() {});
       }
-     
     } catch (e) {
       print(e);
     }
@@ -72,11 +67,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
       appBar: AppBar(
         backgroundColor: dark,
         elevation: 0.0,
-        title: Text('Add post', style: appBarTextStyle),
+        title: const Text('Add post', style: appBarTextStyle),
         centerTitle: true,
       ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         scrollDirection: Axis.vertical,
         children: [
           Padding(
@@ -84,9 +79,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             child: InkWell(
               onTap: () {
                 _pickImage();
-                setState(() {
-                  
-                });
+                setState(() {});
               },
               child: Container(
                   height: 100,
@@ -95,42 +88,43 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     color: dark,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.add_photo_alternate_outlined,
                     color: white,
                     size: 30,
                   )),
             ),
           ),
-          (pickedimages.isNotEmpty)?
-          Container(
-            width: MediaQuery.of(context).size.width,
-          height:100 ,
-            child: ListView.builder(scrollDirection: Axis.horizontal,
-            itemBuilder: (context,i){
-              return PickedImagesWidget(
-                url:File(pickedimages[i].path),onTap: (){
-                  pickedimages.removeAt(i);
-                  setState(() {
-                    
-                  });
-                },
-              );         
-            },
-            itemCount:pickedimages.length ,
-             ),
-          ):
-        SizedBox.shrink(),
+          (pickedimages.isNotEmpty)
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, i) {
+                      return PickedImagesWidget(
+                        url: File(pickedimages[i].path),
+                        onTap: () {
+                          pickedimages.removeAt(i);
+                          setState(() {});
+                        },
+                      );
+                    },
+                    itemCount: pickedimages.length,
+                  ),
+                )
+              : const SizedBox.shrink(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 10, bottom: 20, top: 0),
-                child: Expanded(flex: 1,
+                child: Expanded(
+                  flex: 1,
                   child: Row(
                     children: [
-                      Text('Available', style: style1),
-                      SizedBox(width: 10),
+                      const Text('Available', style: style1),
+                      const SizedBox(width: 10),
                       FlutterSwitch(
                           value: isSwitched,
                           height: 30,
@@ -144,7 +138,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             color: purple,
                           ),
                           onToggle: (value) {
-                
                             setState(() {
                               isSwitched = value;
                             });
@@ -153,7 +146,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ),
                 ),
               ),
-              Expanded(flex: 2,
+              Expanded(
+                flex: 2,
                 child: DropDownCustom(
                   categories: category1,
                   selectedItem: selectedCategory1,
@@ -168,25 +162,25 @@ class _AddPostScreenState extends State<AddPostScreen> {
               )
             ],
           ),
-         SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(flex: 1,
+              Expanded(
+                flex: 1,
                 child: DropDownCustom(
-                        categories: typies,
-                        selectedItem: postType,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            postType = newValue!;
-                          });
-                        },
-                      ),
+                  categories: typies,
+                  selectedItem: postType,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      postType = newValue!;
+                    });
+                  },
+                ),
               ),
-           
               (visible)
                   ? Expanded(
-                    child: DropDownCustom(
+                      child: DropDownCustom(
                         categories: category2,
                         selectedItem: selectedCategory2,
                         onChanged: (String? newValue) {
@@ -195,12 +189,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                           });
                         },
                       ),
-                  )
-                  : SizedBox.shrink()
+                    )
+                  : const SizedBox.shrink()
             ],
           ),
-         
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             children: [
               title('Adress'),
@@ -209,7 +202,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       TextFieldCustom(text: '', controller: addressController)),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -227,25 +220,26 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       showCurrencyName: true,
                       showCurrencyCode: true,
                       onSelect: (Currency currency) {
-                  
                         print('Select currency: ${currency.symbol}');
-                        symbol=currency.symbol;
-                        setState(() {
-                          
-                        });
+                        symbol = currency.symbol;
+                        setState(() {});
                       },
                       favorite: ['SYP'],
                     );
                   },
                   child: Container(
-                    padding: EdgeInsets.only(left: 10) ,
-                    margin: EdgeInsets.only(left: 20),
-                    decoration: BoxDecoration(border: Border.all(color: purple),
-                    borderRadius: BorderRadius.circular(15)),
+                    padding: const EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(left: 20),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: purple),
+                        borderRadius: BorderRadius.circular(15)),
                     child: Row(
                       children: [
-                        Text(symbol,style: style2,),
-                        Icon(
+                        Text(
+                          symbol,
+                          style: style2,
+                        ),
+                        const Icon(
                           Icons.arrow_drop_down,
                           size: 40,
                           color: purple,
@@ -255,7 +249,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ))
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -269,7 +263,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               )),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -279,42 +273,54 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   child: TextFieldCustom(text: '', controller: tagsController))
             ],
           ),
-          SizedBox(height: 20),
-          Consumer<AuthSataProvider>(
-
-            builder:(context, value, child) {
-              
+          const SizedBox(height: 20),
+          Consumer<AuthSataProvider>(builder: (context, value, child) {
             return Center(
-              child:(value.authState==AuthState.notSet)?
-               ElevatedButtonCustom(
-                  text: 'Add', color: purple, onPressed: ()async {
+                child: (value.authState == AuthState.notSet)
+                    ? ElevatedButtonCustom(
+                        text: 'Add',
+                        color: purple,
+                        onPressed: () async {
+                          Provider.of<AuthSataProvider>(context, listen: false)
+                              .changeAuthState(newState: AuthState.waiting);
+                          List<String> keywords =
+                              tagsController.text.split('#').toList();
+                          String uid = FirebaseAuth.instance.currentUser!.uid;
+                          List<String> images = await FileService()
+                              .uploadeimages(pickedimages, context);
 
-          Provider.of<AuthSataProvider>(context,listen: false).changeAuthState(newState: AuthState.waiting) ;
-                    List <String>keywords=tagsController.text.split('#').toList();
-          String uid=FirebaseAuth.instance.currentUser!.uid;
-            List <String>images = await  FileService().uploadeimages(pickedimages,context);     
-               
-               Post post=Post(address: addressController.text,category1: selectedCategory1,
-               category2: selectedCategory2,description: descController.text,isAvailable: isSwitched,
-               price: priceController.text,symbol: symbol,type: postType,userId: uid,keywrds: keywords,photos: images
-               );
-                   await PostDbService().addPost(post, context);
-          
-           Provider.of<AuthSataProvider>(context,listen: false).changeAuthState(newState: AuthState.notSet) ;
-            SnackBar snackBar = SnackBar(content: Text('Added successfully'));
-            Navigator.of(context).pushNamed(HomeScreen.routeName);
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Post post = Post(
+                              address: addressController.text,
+                              category1: selectedCategory1,
+                              category2: selectedCategory2,
+                              description: descController.text,
+                              isAvailable: isSwitched,
+                              price: priceController.text,
+                              symbol: symbol,
+                              type: postType,
+                              userId: uid,
+                              keywrds: keywords,
+                              photos: images);
+                          await PostDbService().addPost(post, context);
 
-                  }):CircularProgressIndicator(color: purple,)
-            );}
-          )
+                          Provider.of<AuthSataProvider>(context, listen: false)
+                              .changeAuthState(newState: AuthState.notSet);
+                          SnackBar snackBar = const SnackBar(
+                              content: Text('Added successfully'));
+                          Navigator.of(context).pushNamed(HomeScreen.routeName);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        })
+                    : const CircularProgressIndicator(
+                        color: purple,
+                      ));
+          })
         ],
       ),
     );
   }
 
   title(String title) {
-    return Container(
+    return SizedBox(
       width: 80,
       child: Text(
         title,

@@ -1,28 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
+import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/screens/details_screen.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   bool isFavorite;
-  String imageProduct;
-  String type;
-  String price;
-  String address;
-  String postId;
+  final String imageProduct;
+  final String type;
+  final String price;
+  final String address;
+  final String postId;
+  final Function()? onPressed;
   ProductCard(
       {Key? key,
       required this.imageProduct,
       required this.isFavorite,
       required this.type,
       required this.address,
-      required this.price,required this.postId})
+      required this.price,
+      required this.postId,
+      required this.onPressed})
       : super(key: key);
+
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  @override
+  void initState() {
+    setState(() {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-Navigator.of(context).push(MaterialPageRoute(builder: (context)=>DetailsScreen(postId: postId,)));},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DetailsScreen(
+                  postId: widget.postId,
+                )));
+      },
       child: Stack(
         children: [
           Container(
@@ -43,16 +62,16 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context)=>DetailsScreen(p
           ),
           Positioned(
             left: 22,
-            child: Container(
+            child: SizedBox(
               width: 140,
               height: 140,
-              child: ClipRRect(  borderRadius: BorderRadius.circular(20),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
                 child: Image.network(
-                  imageProduct,
+                  widget.imageProduct,
                   fit: BoxFit.cover,
                 ),
               ),
-              
             ),
           ),
           Positioned(
@@ -64,26 +83,26 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context)=>DetailsScreen(p
               children: [
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.location_on,
                       color: white,
                     ),
-                     Text(
-                  address,
-                  style: TextStyle(color: white, fontFamily: font,overflow: TextOverflow.fade),
-                ),
+                    Text(
+                      widget.address,
+                      style: const TextStyle(
+                          color: white,
+                          fontFamily: font,
+                          overflow: TextOverflow.fade),
+                    ),
                   ],
                 ),
-              
-               
-               Text(
-                        type,
-                        style: TextStyle(
-                            color: white,
-                            fontFamily: font,
-                            fontWeight: FontWeight.bold),
-                      )
-                 
+                Text(
+                  widget.type,
+                  style: const TextStyle(
+                      color: white,
+                      fontFamily: font,
+                      fontWeight: FontWeight.bold),
+                )
               ],
             ),
           ),
@@ -92,22 +111,35 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context)=>DetailsScreen(p
             left: 25,
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.attach_money,
                   color: white,
                 ),
                 Text(
-                  price,
-                  style: TextStyle(color: white, fontFamily: font),
+                  widget.price,
+                  style: const TextStyle(color: white, fontFamily: font),
                 ),
-                SizedBox(width: 50),
-             
-                   IconButton(
-                       icon: Icon(Icons.favorite_outline),onPressed: () {
-                          
-                        },
-                        color: white,
-                      )
+                const SizedBox(width: 50),
+                IconButton(
+                  icon: (widget.isFavorite)
+                      ? const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      : const Icon(Icons.favorite_outline),
+                  onPressed: () async {
+                    if (widget.isFavorite) {
+                      await UserDbServices()
+                          .removeFromFavourites(widget.postId);
+                    } else {
+                      await UserDbServices().addToFivourites(widget.postId);
+                    }
+                    setState(() {
+                      widget.isFavorite = !widget.isFavorite;
+                    });
+                  },
+                  color: white,
+                )
               ],
             ),
           ),

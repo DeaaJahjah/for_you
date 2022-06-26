@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
-import 'package:for_you/core/features/screens/post_db_service.dart';
+import 'package:for_you/core/features/auth/Services/post_db_service.dart';
 import 'package:for_you/core/features/widgets/text_row.dart';
 import 'package:for_you/features/chat/services/stream_chat_service.dart';
 
