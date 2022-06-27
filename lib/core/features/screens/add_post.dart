@@ -286,7 +286,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                           List<String> keywords =
                               tagsController.text.split('#').toList();
                           String uid = FirebaseAuth.instance.currentUser!.uid;
-                          List<String> images = await FileService()
+
+                          List<String> images = [];
+
+                          images = await FileService()
                               .uploadeimages(pickedimages, context);
 
                           Post post = Post(

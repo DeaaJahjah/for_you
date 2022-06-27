@@ -104,41 +104,86 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Drawer(
+                  backgroundColor: white,
                   child: Column(children: [
-                DrawerItem(
-                    icon: Icons.favorite,
-                    text: 'Favourites',
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(FavouriteScreen.routeName);
-                    }),
-                DrawerItem(
-                    icon: Icons.post_add,
-                    text: 'My posts',
-                    onTap: () {
-                      Navigator.of(context).pushNamed(MyPostsScreen.routeName);
-                    }),
-                DrawerItem(
-                    icon: Icons.message,
-                    text: 'My messages',
-                    onTap: () {
-                      Navigator.of(context).pushNamed(MessagesScreen.routeName);
-                    }),
-                DrawerItem(
-                    icon: Icons.add_box,
-                    text: 'Add post',
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(FavouriteScreen.routeName);
-                    }),
-                DrawerItem(
-                    icon: Icons.help,
-                    text: 'Help',
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(FavouriteScreen.routeName);
-                    })
-              ]));
+                    Container(
+                      height: 200,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: dark,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 10),
+                          CircleAvatar(
+                            backgroundColor: purple,
+                            radius: 50,
+                            backgroundImage: NetworkImage(
+                              snapshot.data!.imgUrl,
+                              scale: 4,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            snapshot.data!.name,
+                            style: const TextStyle(
+                              color: white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            snapshot.data!.email,
+                            style: const TextStyle(
+                                color: white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    DrawerItem(
+                        icon: Icons.favorite,
+                        text: 'Favourites',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(FavouriteScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.post_add,
+                        text: 'My posts',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(MyPostsScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.message,
+                        text: 'My messages',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(MessagesScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.add_box,
+                        text: 'Add post',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(FavouriteScreen.routeName);
+                        }),
+                    DrawerItem(
+                        icon: Icons.help,
+                        text: 'Help',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(FavouriteScreen.routeName);
+                        })
+                  ]));
             } else {
               return const SizedBox.shrink();
             }
