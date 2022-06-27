@@ -86,8 +86,8 @@ class PostDbService {
     var user = UserModel.fromFirestore(doc);
     List<Post> posts = [];
 
-    for (var i = 0; i < user.favourites!.length; i++) {
-      var post = await getPostById(user.favourites![i]);
+    for (var fav in user.favourites ?? []) {
+      var post = await getPostById(fav);
       if (post.isAvailable) {
         posts.add(post);
       }
