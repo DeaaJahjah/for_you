@@ -67,7 +67,10 @@ class _EditPostScreenState extends State<EditPostScreen> {
       descController.text = post.description;
       selectedCategory1 = post.category1;
       selectedCategory2 = post.category2;
+      postType = post.type;
+      category2 = categories[selectedCategory1] ?? [];
       symbol = post.symbol;
+      print(symbol);
       photos = post.photos!;
       postId = post.id!;
       if (post.keywrds != null) {
@@ -76,14 +79,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
         }
       }
       firstTime = true;
+      setState(() {});
     }
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    category2 = categories[selectedCategory1]!;
-
     return Scaffold(
       backgroundColor: dark,
       appBar: AppBar(
@@ -196,7 +198,6 @@ class _EditPostScreenState extends State<EditPostScreen> {
                     setState(() {
                       selectedCategory1 = newValue!;
                       selectedCategory2 = categories[selectedCategory1]!.first;
-                      visible = true;
                     });
                   },
                 ),
@@ -258,8 +259,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       showSearchField: true,
                       showCurrencyName: true,
                       showCurrencyCode: true,
+                      theme: CurrencyPickerThemeData(backgroundColor: dark),
                       onSelect: (Currency currency) {
-                        print('Select currency: ${currency.symbol}');
                         symbol = currency.symbol;
                         setState(() {});
                       },

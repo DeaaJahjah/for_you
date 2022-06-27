@@ -35,10 +35,18 @@ class PostDbService {
     }).toList();
   }
 
-  Stream<List<Post>> getPosts() {
+  Stream<List<Post>> getPosts(String category) {
+    if (category == 'All') {
+      return _db
+          .collection('posts')
+          .where('is_available', isEqualTo: true)
+          .snapshots()
+          .map(_projectListFromSnapshot);
+    }
     return _db
         .collection('posts')
         .where('is_available', isEqualTo: true)
+        .where('category1', isEqualTo: category)
         .snapshots()
         .map(_projectListFromSnapshot);
   }

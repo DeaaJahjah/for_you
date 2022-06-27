@@ -13,7 +13,6 @@ import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/drawer_item.dart';
 import 'package:for_you/core/features/widgets/porduct_card.dart';
-import 'package:for_you/core/features/widgets/text_field_custome.dart';
 import 'package:for_you/features/chat/messages_screen.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
@@ -26,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController controller = TextEditingController();
+  String category = categoriesHome[0].name;
   bool isSwitched = true;
   bool loading = true;
   UserModel? userModel;
@@ -101,95 +101,93 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        drawer: FutureBuilder<UserModel?>(
-          future: UserDbServices().getUser(uid),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Drawer(
-                  backgroundColor: white,
-                  child: Column(children: [
-                    Container(
-                      height: 200,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: dark,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(25),
-                          bottomRight: Radius.circular(25),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 10),
-                          CircleAvatar(
-                            backgroundColor: purple,
-                            radius: 50,
-                            backgroundImage: NetworkImage(
-                              snapshot.data!.imgUrl,
-                              scale: 4,
+        drawer: Drawer(
+            backgroundColor: white,
+            child: Column(children: [
+              Container(
+                height: 200,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: dark,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                child: FutureBuilder<UserModel?>(
+                    future: UserDbServices().getUser(uid),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 10),
+                            CircleAvatar(
+                              backgroundColor: purple,
+                              radius: 50,
+                              backgroundImage: NetworkImage(
+                                snapshot.data!.imgUrl,
+                                scale: 4,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            snapshot.data!.name,
-                            style: const TextStyle(
-                              color: white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            snapshot.data!.email,
-                            style: const TextStyle(
+                            const SizedBox(height: 10),
+                            Text(
+                              snapshot.data!.name,
+                              style: const TextStyle(
                                 color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    DrawerItem(
-                        icon: Icons.favorite,
-                        text: 'Favourites',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed(FavouriteScreen.routeName);
-                        }),
-                    DrawerItem(
-                        icon: Icons.post_add,
-                        text: 'My posts',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(MyPostsScreen.routeName);
-                        }),
-                    DrawerItem(
-                        icon: Icons.message,
-                        text: 'My messages',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(MessagesScreen.routeName);
-                        }),
-                    DrawerItem(
-                        icon: Icons.add_box,
-                        text: 'Add post',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed(AddPostScreen.routeName);
-                        }),
-                    DrawerItem(
-                        icon: Icons.help,
-                        text: 'Help',
-                        onTap: () {
-                          Navigator.of(context).pushNamed(HelpScreen.routeName);
-                        })
-                  ]));
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              snapshot.data!.email,
+                              style: const TextStyle(
+                                  color: white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        );
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(color: purple),
+                      );
+                    }),
+              ),
+              DrawerItem(
+                  icon: Icons.favorite,
+                  text: 'Favourites',
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(FavouriteScreen.routeName);
+                  }),
+              DrawerItem(
+                  icon: Icons.post_add,
+                  text: 'My posts',
+                  onTap: () {
+                    Navigator.of(context).pushNamed(MyPostsScreen.routeName);
+                  }),
+              DrawerItem(
+                  icon: Icons.message,
+                  text: 'My messages',
+                  onTap: () {
+                    Navigator.of(context).pushNamed(MessagesScreen.routeName);
+                  }),
+              DrawerItem(
+                  icon: Icons.add_box,
+                  text: 'Add post',
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(AddPostScreen.routeName);
+                  }),
+              DrawerItem(
+                  icon: Icons.help,
+                  text: 'Help',
+                  onTap: () {
+                    Navigator.of(context).pushNamed(HelpScreen.routeName);
+                  })
+            ])),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
@@ -204,15 +202,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     background: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
-                          child: SizedBox(
-                              height: 40,
-                              child: TextFieldCustom(
-                                  text: 'Search',
-                                  controller: controller,
-                                  icon: Icons.search)),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
+                        //   child: SizedBox(
+                        //       height: 40,
+                        //       child: TextFieldCustom(
+                        //           text: 'Search',
+                        //           controller: controller,
+                        //           icon: Icons.search)),
+                        // ),
                         const Padding(
                           padding: EdgeInsets.all(8),
                           child: Text(
@@ -225,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 110,
+                          height: 150,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) => CategoryCard(
@@ -237,6 +235,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       i++) {
                                     if (i == index) {
                                       categoriesHome[i].isSelected = true;
+                                      category = categoriesHome[i].name;
+                                      setState(() {});
                                     } else {
                                       categoriesHome[i].isSelected = false;
                                     }
@@ -254,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           body: (!loading)
               ? StreamBuilder<List<Post>>(
-                  stream: PostDbService().getPosts(),
+                  stream: PostDbService().getPosts(category),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<Post> posts = snapshot.data!;

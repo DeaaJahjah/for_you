@@ -41,20 +41,25 @@ var categories = {
   'Clothes': ['Women', 'Man'],
   'Sport': ['Machines', 'Clothes'],
   'Electronic': ['Select', 'gfgf'],
-  'cars': ['Select'],
-  'Furniture and home décor': ['Select'],
+  'Cars': ['Select'],
+  'Furniture': ['Select'],
   'kids': ['Select'],
-  'accessories': ['Select'],
-  'shoes': ['Select'],
-  'school supplies': ['Select'],
-  'books': ['Select'],
+  'Accessories': ['Select'],
+  'Shoes': ['Select'],
+  'School supplies': ['Select'],
+  'Books': ['Select'],
 };
 
 List<String> typies = ['New', 'Used'];
 List<Category> categoriesHome = [
+  Category(name: 'All', urlImage: 'assets/images/kids.png', isSelected: true),
   Category(
-      name: 'House', urlImage: 'assets/images/house.png', isSelected: true),
-  Category(name: 'Kids', urlImage: 'assets/images/kids.png', isSelected: false),
+      name: 'Clothes',
+      urlImage: 'assets/images/furniture.png',
+      isSelected: false),
+  Category(name: 'kids', urlImage: 'assets/images/kids.png', isSelected: false),
+  Category(
+      name: 'Shoes', urlImage: 'assets/images/sport.png', isSelected: false),
   Category(
       name: 'Sport', urlImage: 'assets/images/sport.png', isSelected: false),
   Category(
@@ -62,7 +67,19 @@ List<Category> categoriesHome = [
       urlImage: 'assets/images/furniture.png',
       isSelected: false),
   Category(
-      name: 'Furniture',
+      name: 'Electronic',
+      urlImage: 'assets/images/kids.png',
+      isSelected: false),
+  Category(
+      name: 'Cars', urlImage: 'assets/images/furniture.png', isSelected: false),
+  Category(
+      name: 'Accessories',
       urlImage: 'assets/images/furniture.png',
-      isSelected: false)
+      isSelected: false),
+  Category(
+      name: 'School supplies',
+      urlImage: 'assets/images/kids.png',
+      isSelected: false),
+  Category(
+      name: 'Books', urlImage: 'assets/images/sport.png', isSelected: false),
 ];
