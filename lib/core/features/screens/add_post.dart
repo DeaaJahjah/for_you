@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:currency_picker/currency_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -228,11 +227,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       showCurrencyName: true,
                       showCurrencyCode: true,
                       onSelect: (Currency currency) {
-                      //  Locale locale = Localizations.localeOf(context);
-                        // var format = NumberFormat.simpleCurrency(
-                        //     locale: locale.toString());
-                        // print("Currency symbol ${format.currencySymbol}");
-                        // print("Currency name ${format.currencyName}"); 
+                  
                         print('Select currency: ${currency.symbol}');
                         symbol=currency.symbol;
                         setState(() {

@@ -46,29 +46,36 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context)=>DetailsScreen(p
             child: Container(
               width: 140,
               height: 140,
-              child: Image.network(
-                imageProduct,
-                fit: BoxFit.fill,
+              child: ClipRRect(  borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  imageProduct,
+                  fit: BoxFit.cover,
+                ),
               ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
+              
             ),
           ),
           Positioned(
             top: 150,
             left: 25,
+            width: 140,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.location_on,
-                  color: white,
-                ),
-                Text(
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      color: white,
+                    ),
+                     Text(
                   address,
-                  style: TextStyle(color: white, fontFamily: font),
+                  style: TextStyle(color: white, fontFamily: font,overflow: TextOverflow.fade),
                 ),
-                SizedBox(width: 50),
+                  ],
+                ),
+              
+               
                Text(
                         type,
                         style: TextStyle(

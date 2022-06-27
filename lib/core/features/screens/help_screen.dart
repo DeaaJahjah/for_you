@@ -21,7 +21,7 @@ class HelpScreen extends StatelessWidget {
           )),
           body: Column(crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-Text('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh'),
+
           ],),
     );
   }
