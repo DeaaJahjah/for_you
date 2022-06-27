@@ -144,9 +144,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 dark.withOpacity(0.2)),
                           ),
                           onPressed: () {
-                            Navigator.of(context).pushNamed(
-                                UpdateProfileScreen.routeName,
-                                arguments: snapshot.data!);
+                            Navigator.of(context)
+                                .pushNamed(UpdateProfileScreen.routeName,
+                                    arguments: snapshot.data!)
+                                .then((value) {
+                              setState(() {});
+                            });
                           },
                           child: Row(
                             children: const [

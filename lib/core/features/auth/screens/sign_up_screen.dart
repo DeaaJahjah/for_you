@@ -23,12 +23,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  List<DropdownMenuItem> items = [
-    const DropdownMenuItem(
-      child: Text(''),
-    )
-  ];
-
   TextEditingController userName = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();

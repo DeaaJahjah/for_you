@@ -4,6 +4,8 @@ import 'package:for_you/core/config/enums/enums.dart';
 import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
 import 'package:for_you/core/features/auth/screens/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart'
+    as streamSdk;
 
 class FlutterFireAuthServices {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -12,6 +14,7 @@ class FlutterFireAuthServices {
 
   Future<void> signOut(context) async {
     await _firebaseAuth.signOut();
+    await streamSdk.StreamChatCore.of(context).client.disconnectUser();
     Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
   }
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:for_you/core/config/extensions/stream_sdk.dart';
+import 'package:for_you/core/features/auth/models/user_model.dart';
 import 'package:for_you/features/chat/chat_screen.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
@@ -16,5 +18,14 @@ class StreamChatService {
     Navigator.of(context).push(
       ChatScreen.routeWithChannel(channel),
     );
+  }
+
+  updateUser(UserModel user, BuildContext context) async {
+    try {
+      await StreamChatCore.of(context).client.updateUser(User(
+          id: context.currentUser!.id, name: user.name, image: user.imgUrl));
+    } catch (e) {
+      print(e);
+    }
   }
 }

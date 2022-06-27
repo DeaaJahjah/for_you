@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/config/enums/enums.dart';
 import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
+import 'package:for_you/features/chat/services/stream_chat_service.dart';
 import 'package:for_you/features/home_screen/home.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
@@ -65,9 +66,18 @@ class UserDbServices {
     return null;
   }
 
-  //upate user
-  Future<void> updateUser(UserModel user) async {
-    await _db.collection('users').doc(firebaseUser!.uid).update(user.toJson());
+  //update user
+  Future<void> updateUser(UserModel user, BuildContext context) async {
+    try {
+      await _db
+          .collection('users')
+          .doc(firebaseUser!.uid)
+          .update(user.toJson());
+      await StreamChatService().updateUser(user, context);
+    } on FirebaseException catch (e) {
+      final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   addToFivourites(String id) async {
