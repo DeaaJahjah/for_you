@@ -15,19 +15,18 @@ class PostDbService {
     }
   }
 
-  // Future<List<Post>> getPosts() async {
-  //   List<Post> posts = [];
+  Future<List<Post>> similerStuff(String category) async {
+    var query = await _db
+        .collection('posts')
+        .where('category1', isEqualTo: category)
+        .get();
 
-  //   var query = await _db
-  //       .collection('posts')
-  //       .where('is_available', isEqualTo: true)
-  //       .get();
-
-  //   for (var doc in query.docs) {
-  //     posts.add(Post.fromFirestore(doc));
-  //   }
-  //   return posts;
-  // }
+    List<Post> posts = [];
+    for (var doc in query.docs) {
+      posts.add(Post.fromFirestore(doc));
+    }
+    return posts;
+  }
 
   List<Post> _projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {

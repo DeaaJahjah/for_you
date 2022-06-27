@@ -6,6 +6,7 @@ import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
 import 'package:for_you/core/features/auth/Services/post_db_service.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
+import 'package:for_you/core/features/widgets/similer_stuff.dart';
 import 'package:for_you/core/features/widgets/text_row.dart';
 import 'package:for_you/features/chat/services/stream_chat_service.dart';
 
@@ -68,132 +69,140 @@ class _DetailsScreenState extends State<DetailsScreen> {
               for (var element in snapshot.data!.keywrds!) {
                 keywords += ' ' + element;
               }
-              return Stack(
-                children: [
-                  Column(
-                    children: [
-                      CarouselSlider(
-                        carouselController: _controller,
-                        options: CarouselOptions(
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _current = index;
-                            });
-                          },
-                          autoPlay: true,
-                          aspectRatio: 1.3,
-                          enlargeCenterPage: true,
-                        ),
-                        items: imageSliders,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: imgList.asMap().entries.map((entry) {
-                          return GestureDetector(
-                            onTap: () => _controller.animateToPage(entry.key),
-                            child: Container(
-                              width: 12.0,
-                              height: 12.0,
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 4.0),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : purple)
-                                      .withOpacity(
-                                          _current == entry.key ? 0.9 : 0.4)),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      TextRow(title: 'Adress ', data: snapshot.data!.address),
-                      TextRow(title: 'Type ', data: snapshot.data!.type),
-                      TextRow(
-                          title: 'Categories ',
-                          data: snapshot.data!.category1 +
-                              ' - ' +
-                              snapshot.data!.category2),
-                      TextRow(title: 'Keywords ', data: keywords),
-                      TextRow(title: 'Description ', data: ''),
-                      TextRow(title: '', data: snapshot.data!.description),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10, top: 10),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Similar items',
-                              style: TextStyle(
-                                  color: purple,
-                                  fontFamily: font,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                      )
-                    ],
-                  ),
-                  Positioned(
-                    right: 10,
-                    top: MediaQuery.of(context).size.height * 0.47,
-                    child: Column(
+              return SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    Column(
                       children: [
-                        InkWell(
-                          onTap: () async {
-                            //Start chat
-                            await StreamChatService()
-                                .createChannel(context, snapshot.data!.userId);
-                          },
-                          child: const Icon(
-                            Icons.message,
-                            color: white,
-                            size: 25,
+                        CarouselSlider(
+                          carouselController: _controller,
+                          options: CarouselOptions(
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _current = index;
+                              });
+                            },
+                            autoPlay: true,
+                            aspectRatio: 1.3,
+                            enlargeCenterPage: true,
+                          ),
+                          items: imageSliders,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: imgList.asMap().entries.map((entry) {
+                            return GestureDetector(
+                              onTap: () => _controller.animateToPage(entry.key),
+                              child: Container(
+                                width: 12.0,
+                                height: 12.0,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 4.0),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: (Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : purple)
+                                        .withOpacity(
+                                            _current == entry.key ? 0.9 : 0.4)),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        TextRow(title: 'Adress ', data: snapshot.data!.address),
+                        TextRow(title: 'Type ', data: snapshot.data!.type),
+                        TextRow(
+                            title: 'Categories ',
+                            data: snapshot.data!.category1 +
+                                ' - ' +
+                                snapshot.data!.category2),
+                        TextRow(title: 'Keywords ', data: keywords),
+                        TextRow(title: 'Description ', data: ''),
+                        TextRow(title: '', data: snapshot.data!.description),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 10, top: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Similar items',
+                                style: TextStyle(
+                                    color: purple,
+                                    fontFamily: font,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold)),
                           ),
                         ),
-                        (!loading)
-                            ? Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: InkWell(
-                                  onTap: () async {
-                                    if (userModel!
-                                        .isFavouritePost(snapshot.data!.id!)) {
-                                      await UserDbServices()
-                                          .removeFromFavourites(
-                                              snapshot.data!.id!);
-                                      state = false;
-                                    } else {
-                                      await UserDbServices()
-                                          .addToFivourites(snapshot.data!.id!);
-                                      state = true;
-                                    }
-                                    setState(() {});
-                                  },
-                                  child: ((userModel!
-                                          .isFavouritePost(snapshot.data!.id!)))
-                                      ? const Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                          size: 25,
-                                        )
-                                      : const Icon(
-                                          Icons.favorite_outline,
-                                          color: white,
-                                          size: 25,
-                                        ),
-                                ))
-                            : const CircularProgressIndicator(
-                                color: purple,
-                              ),
-                        Text(snapshot.data!.price + ' ' + snapshot.data!.symbol,
-                            style: const TextStyle(
-                              color: white,
-                              fontFamily: font,
-                              fontSize: 16,
-                            ))
+                        SimilerStuff(
+                            category: snapshot.data!.category1,
+                            postID: snapshot.data!.id!),
                       ],
                     ),
-                  ),
-                ],
+                    Positioned(
+                      right: 10,
+                      top: MediaQuery.of(context).size.height * 0.47,
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              //Start chat
+                              await StreamChatService().createChannel(
+                                  context, snapshot.data!.userId);
+                            },
+                            child: const Icon(
+                              Icons.message,
+                              color: white,
+                              size: 25,
+                            ),
+                          ),
+                          (!loading)
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      if (userModel!.isFavouritePost(
+                                          snapshot.data!.id!)) {
+                                        await UserDbServices()
+                                            .removeFromFavourites(
+                                                snapshot.data!.id!);
+                                        state = false;
+                                      } else {
+                                        await UserDbServices().addToFivourites(
+                                            snapshot.data!.id!);
+                                        state = true;
+                                      }
+                                      setState(() {});
+                                    },
+                                    child: ((userModel!.isFavouritePost(
+                                            snapshot.data!.id!)))
+                                        ? const Icon(
+                                            Icons.favorite,
+                                            color: Colors.red,
+                                            size: 25,
+                                          )
+                                        : const Icon(
+                                            Icons.favorite_outline,
+                                            color: white,
+                                            size: 25,
+                                          ),
+                                  ))
+                              : const CircularProgressIndicator(
+                                  color: purple,
+                                ),
+                          Text(
+                              snapshot.data!.price +
+                                  ' ' +
+                                  snapshot.data!.symbol,
+                              style: const TextStyle(
+                                color: white,
+                                fontFamily: font,
+                                fontSize: 16,
+                              ))
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               );
             }
 
