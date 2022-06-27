@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
+import 'package:for_you/core/features/screens/add_post.dart';
 import 'package:for_you/core/features/screens/favourite_screen.dart';
 import 'package:for_you/core/features/auth/Services/post_db_service.dart';
+import 'package:for_you/core/features/screens/help_screen.dart';
 import 'package:for_you/core/features/screens/my_posts_screen.dart';
 import 'package:for_you/core/features/widgets/category_card.dart';
 import 'package:for_you/core/config/constant/constant.dart';
@@ -174,14 +176,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         text: 'Add post',
                         onTap: () {
                           Navigator.of(context)
-                              .pushReplacementNamed(FavouriteScreen.routeName);
+                              .pushReplacementNamed(AddPostScreen.routeName);
                         }),
                     DrawerItem(
                         icon: Icons.help,
                         text: 'Help',
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(FavouriteScreen.routeName);
+                          Navigator.of(context).pushNamed(HelpScreen.routeName);
                         })
                   ]));
             } else {
