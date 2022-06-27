@@ -229,18 +229,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     userModel!.isFavouritePost(posts[i].id!),
                                 type: posts[i].type,
                                 price: posts[i].price,
-                                onPressed: () async {
-                                  bool state = false;
-                                  if (userModel!
-                                      .isFavouritePost(posts[i].id!)) {
-                                    await UserDbServices()
-                                        .removeFromFavourites(posts[i].id!);
-                                  } else {
-                                    await UserDbServices()
-                                        .addToFivourites(posts[i].id!);
-                                    state = true;
-                                  }
-                                },
                               ));
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {

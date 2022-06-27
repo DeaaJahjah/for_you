@@ -10,17 +10,16 @@ class ProductCard extends StatefulWidget {
   final String price;
   final String address;
   final String postId;
-  final Function()? onPressed;
-  ProductCard(
-      {Key? key,
-      required this.imageProduct,
-      required this.isFavorite,
-      required this.type,
-      required this.address,
-      required this.price,
-      required this.postId,
-      required this.onPressed})
-      : super(key: key);
+
+  ProductCard({
+    Key? key,
+    required this.imageProduct,
+    required this.isFavorite,
+    required this.type,
+    required this.address,
+    required this.price,
+    required this.postId,
+  }) : super(key: key);
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -28,19 +27,21 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   @override
-  void initState() {
-    setState(() {});
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailsScreen(
-                  postId: widget.postId,
-                )));
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+                builder: (context) => DetailsScreen(
+                      postId: widget.postId,
+                    )))
+            .then((value) {
+          setState(() {
+            print(value);
+            widget.isFavorite = value;
+          });
+        });
       },
       child: Stack(
         children: [
