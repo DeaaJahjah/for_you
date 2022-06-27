@@ -89,20 +89,22 @@ class _ProductCardState extends State<ProductCard> {
                       color: white,
                     ),
                     Text(
-                      widget.address,
+                      widget.address.split(' ').toList().first,
+                      softWrap: false,
                       style: const TextStyle(
                           color: white,
                           fontFamily: font,
-                          overflow: TextOverflow.fade),
+                          overflow: TextOverflow.ellipsis),
                     ),
                   ],
                 ),
                 Text(
                   widget.type,
                   style: const TextStyle(
-                      color: white,
-                      fontFamily: font,
-                      fontWeight: FontWeight.bold),
+                    color: white,
+                    fontFamily: font,
+                    fontWeight: FontWeight.bold,
+                  ),
                 )
               ],
             ),

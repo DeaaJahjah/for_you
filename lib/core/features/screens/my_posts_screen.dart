@@ -35,7 +35,7 @@ class _MyPostsScreenState extends State<MyPostsScreen> {
                     var post = myPosts[index];
                     return ItemCustom(
                       urlImage: post.photos!.first,
-                      address: post.address,
+                      address: post.address.split(' ').first,
                       type: post.type,
                       price: post.price,
                       onDelete: () async {

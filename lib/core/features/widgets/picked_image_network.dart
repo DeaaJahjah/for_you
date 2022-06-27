@@ -1,12 +1,11 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 
-class PickedImagesWidget extends StatelessWidget {
-  final File url;
+class PickedImageNetwok extends StatelessWidget {
+  final String url;
   final Function() onTap;
 
-  const PickedImagesWidget({Key? key, required this.url, required this.onTap})
+  const PickedImageNetwok({Key? key, required this.url, required this.onTap})
       : super(key: key);
 
   @override
@@ -19,7 +18,7 @@ class PickedImagesWidget extends StatelessWidget {
           color: dark,
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Image.file(
+            child: Image.network(
               url,
               fit: BoxFit.fill,
             ),
