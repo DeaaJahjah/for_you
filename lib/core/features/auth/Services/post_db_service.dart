@@ -35,7 +35,7 @@ class PostDbService {
     }).toList();
   }
 
-  Stream<List<Post>> getPosts(String category) {
+  Stream<List<Post>> getPostsByCategory(String category) {
     if (category == 'All') {
       return _db
           .collection('posts')
@@ -49,6 +49,19 @@ class PostDbService {
         .where('category1', isEqualTo: category)
         .snapshots()
         .map(_projectListFromSnapshot);
+  }
+
+  Future<List<Post>> getPosts() async {
+    var query = await _db
+        .collection('posts')
+        .where('is_available', isEqualTo: true)
+        .get();
+
+    List<Post> posts = [];
+    for (var doc in query.docs) {
+      posts.add(Post.fromFirestore(doc));
+    }
+    return posts;
   }
 
   Future<Post> getPostById(String id) async {

@@ -254,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           body: (!loading)
               ? StreamBuilder<List<Post>>(
-                  stream: PostDbService().getPosts(category),
+                  stream: PostDbService().getPostsByCategory(category),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<Post> posts = snapshot.data!;

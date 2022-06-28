@@ -196,7 +196,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           const SizedBox(height: 20),
           Row(
             children: [
-              title('Adress'),
+              title('Address'),
               Expanded(
                   child:
                       TextFieldCustom(text: '', controller: addressController)),
@@ -285,6 +285,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                               .changeAuthState(newState: AuthState.waiting);
                           List<String> keywords =
                               tagsController.text.split('#').toList();
+
                           String uid = FirebaseAuth.instance.currentUser!.uid;
 
                           List<String> images = [];

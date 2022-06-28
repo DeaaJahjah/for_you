@@ -3,15 +3,17 @@ import 'package:for_you/core/config/constant/constant.dart';
 
 class TextFieldCustom extends StatelessWidget {
   int? maxLine = 1;
-  String text;
-  TextEditingController controller;
-  IconData? icon;
+  final String text;
+  final TextEditingController controller;
+  final IconData? icon;
+  void Function(String)? onChanged;
   TextFieldCustom(
       {Key? key,
       required this.text,
       required this.controller,
       this.icon,
-      this.maxLine})
+      this.maxLine,
+      this.onChanged})
       : super(key: key);
 
   @override
@@ -57,6 +59,7 @@ class TextFieldCustom extends StatelessWidget {
         }
         return null;
       },
+      onChanged: onChanged,
     );
   }
 }

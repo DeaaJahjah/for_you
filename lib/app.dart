@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/config/Routes/routes.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
+import 'package:for_you/features/search/data_provider.dart';
+import 'package:for_you/features/search/search_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -18,6 +20,12 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AuthSataProvider>(
           create: (_) => AuthSataProvider(),
+        ),
+        ChangeNotifierProvider<DataProvider>(
+          create: (_) => DataProvider(),
+        ),
+        ChangeNotifierProvider<SearchProvider>(
+          create: (_) => SearchProvider(),
         ),
       ],
       child: MaterialApp(
