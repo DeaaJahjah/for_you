@@ -155,7 +155,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: SizedBox(
                     height: 40,
                     child: TextFieldCustom(
-                      text: 'Ex: #Clothes #PC',
+                      text: 'Ex: Clothes PC',
                       controller: controller,
                       icon: Icons.abc,
                       onChanged: (value) {
