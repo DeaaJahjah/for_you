@@ -6,6 +6,7 @@ import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
 import 'package:for_you/core/features/auth/Services/post_db_service.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
+import 'package:for_you/core/features/report_db_service.dart';
 import 'package:for_you/core/features/widgets/similer_stuff.dart';
 import 'package:for_you/core/features/widgets/text_row.dart';
 import 'package:for_you/features/chat/services/stream_chat_service.dart';
@@ -113,6 +114,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         TextRow(title: 'Adress ', data: snapshot.data!.address),
                         TextRow(title: 'Type ', data: snapshot.data!.type),
                         TextRow(
+                            title: 'Price ',
+                            data: snapshot.data!.price +
+                                ' ' +
+                                snapshot.data!.symbol),
+                        TextRow(
                             title: 'Categories ',
                             data: snapshot.data!.category1 +
                                 ' - ' +
@@ -142,18 +148,20 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       top: MediaQuery.of(context).size.height * 0.47,
                       child: Column(
                         children: [
-                          InkWell(
-                            onTap: () async {
-                              //Start chat
-                              await StreamChatService().createChannel(
-                                  context, snapshot.data!.userId);
-                            },
-                            child: const Icon(
-                              Icons.message,
-                              color: white,
-                              size: 25,
-                            ),
-                          ),
+                          (userModel!.id != snapshot.data!.userId)
+                              ? InkWell(
+                                  onTap: () async {
+                                    //Start chat
+                                    await StreamChatService().createChannel(
+                                        context, snapshot.data!.userId);
+                                  },
+                                  child: const Icon(
+                                    Icons.message,
+                                    color: white,
+                                    size: 25,
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
                           (!loading)
                               ? Padding(
                                   padding:
@@ -189,15 +197,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               : const CircularProgressIndicator(
                                   color: purple,
                                 ),
-                          Text(
-                              snapshot.data!.price +
-                                  ' ' +
-                                  snapshot.data!.symbol,
-                              style: const TextStyle(
+                          const SizedBox(height: 10),
+                          InkWell(
+                            onTap: () async {
+                              //send report
+                              await ReportDbService()
+                                  .sendReport(snapshot.data!.id!, context);
+                            },
+                            child: const Icon(
+                              Icons.report_gmailerrorred,
+                              color: white,
+                              size: 25,
+                            ),
+                          ),
+                          const Text('Report',
+                              style: TextStyle(
                                 color: white,
                                 fontFamily: font,
                                 fontSize: 16,
-                              ))
+                              )),
                         ],
                       ),
                     ),
