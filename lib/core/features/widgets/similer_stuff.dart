@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/config/extensions/firebase.dart';
-import 'package:for_you/core/features/auth/Services/post_db_service.dart';
-import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
+import 'package:for_you/core/features/services/post_db_service.dart';
+import 'package:for_you/core/features/services/user_db_services.dart';
 import 'package:for_you/core/features/widgets/porduct_card.dart';
 
 class SimilerStuff extends StatefulWidget {
@@ -36,25 +36,30 @@ class _SimilerStuffState extends State<SimilerStuff> {
     return (!loading)
         ? SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 250,
+            height: 300,
             child: FutureBuilder<List<Post>>(
                 future: PostDbService().similerStuff(widget.category),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var posts = snapshot.data!;
                     return ListView.builder(
+                        shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: posts.length,
                         itemBuilder: (context, i) {
                           if (posts[i].id! != widget.postID) {
-                            return ProductCard(
-                              postId: posts[i].id!,
-                              imageProduct: posts[i].photos!.first,
-                              address: posts[i].address,
-                              isFavorite:
-                                  userModel!.isFavouritePost(posts[i].id!),
-                              type: posts[i].type,
-                              price: posts[i].price,
+                            return SizedBox(
+                              width: 200,
+                              height: 300,
+                              child: ProductCard(
+                                postId: posts[i].id!,
+                                imageProduct: posts[i].photos!.first,
+                                address: posts[i].address,
+                                isFavorite:
+                                    userModel!.isFavouritePost(posts[i].id!),
+                                type: posts[i].type,
+                                price: posts[i].price,
+                              ),
                             );
                           }
                           return const SizedBox.shrink();

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
-import 'package:for_you/core/features/auth/Services/post_db_service.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
-import 'package:for_you/core/features/screens/edit_post_screen.dart';
+import 'package:for_you/core/features/services/post_db_service.dart';
 import 'package:for_you/core/features/widgets/item_custome.dart';
+import 'package:for_you/features/screens/edit_post_screen.dart';
 
 class MyPostsScreen extends StatefulWidget {
   static const String routeName = '/post_screen';

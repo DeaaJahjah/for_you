@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
-import 'package:for_you/core/features/auth/Services/post_db_service.dart';
-import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
+import 'package:for_you/core/features/services/post_db_service.dart';
+import 'package:for_you/core/features/services/user_db_services.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/item_custome.dart';
 

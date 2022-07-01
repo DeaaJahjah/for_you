@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:for_you/core/features/auth/screens/login_screen.dart';
 import 'package:for_you/core/features/auth/screens/sign_up_screen.dart';
-import 'package:for_you/core/features/screens/add_post.dart';
-import 'package:for_you/core/features/screens/details_screen.dart';
-import 'package:for_you/core/features/screens/edit_post_screen.dart';
-import 'package:for_you/core/features/screens/favourite_screen.dart';
-import 'package:for_you/core/features/screens/help_screen.dart';
-import 'package:for_you/core/features/screens/my_posts_screen.dart';
-import 'package:for_you/core/features/screens/update_profile_screen.dart';
 
 import 'package:for_you/features/chat/messages_screen.dart';
 
 import 'package:for_you/features/home_screen/home.dart';
 import 'package:for_you/features/profile/profile_screen.dart';
+import 'package:for_you/features/profile/update_profile_screen.dart';
+import 'package:for_you/features/screens/add_post.dart';
+import 'package:for_you/features/screens/details_screen.dart';
+import 'package:for_you/features/screens/edit_post_screen.dart';
+import 'package:for_you/features/screens/favourite_screen.dart';
+import 'package:for_you/features/screens/help_screen.dart';
+import 'package:for_you/features/screens/my_posts_screen.dart';
 
 import 'package:for_you/features/search/search_screen.dart';
 import 'package:for_you/features/splash_screen/splash_screen.dart';

@@ -1,19 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:for_you/core/features/auth/Services/user_db_services.dart';
+
 import 'package:for_you/core/features/auth/models/post.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
-import 'package:for_you/core/features/screens/add_post.dart';
-import 'package:for_you/core/features/screens/favourite_screen.dart';
-import 'package:for_you/core/features/auth/Services/post_db_service.dart';
-import 'package:for_you/core/features/screens/help_screen.dart';
-import 'package:for_you/core/features/screens/my_posts_screen.dart';
+
+import 'package:for_you/core/features/services/post_db_service.dart';
+import 'package:for_you/core/features/services/user_db_services.dart';
 import 'package:for_you/core/features/widgets/category_card.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/drawer_item.dart';
 import 'package:for_you/core/features/widgets/porduct_card.dart';
 import 'package:for_you/features/chat/messages_screen.dart';
+import 'package:for_you/features/screens/add_post.dart';
+import 'package:for_you/features/screens/favourite_screen.dart';
+import 'package:for_you/features/screens/help_screen.dart';
+import 'package:for_you/features/screens/my_posts_screen.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/Services/authentecation_service.dart';
-import 'package:for_you/core/features/auth/Services/post_db_service.dart';
-import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
-import 'package:for_you/core/features/screens/my_posts_screen.dart';
-import 'package:for_you/core/features/screens/update_profile_screen.dart';
+import 'package:for_you/core/features/services/post_db_service.dart';
+import 'package:for_you/core/features/services/user_db_services.dart';
+import 'package:for_you/features/profile/update_profile_screen.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/elevated_button_custom.dart';
+import 'package:for_you/features/screens/my_posts_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile_screen';

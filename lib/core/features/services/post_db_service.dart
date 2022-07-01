@@ -64,10 +64,13 @@ class PostDbService {
     return posts;
   }
 
-  Future<Post> getPostById(String id) async {
+  Future<Post?> getPostById(String id) async {
     var doc = await _db.collection('posts').doc(id).get();
+    if (doc.exists) {
+      return Post.fromFirestore(doc);
+    }
 
-    return Post.fromFirestore(doc);
+    return null;
   }
 
   Future<List<Post>> myPosts() async {
@@ -108,8 +111,10 @@ class PostDbService {
 
     for (var fav in user.favourites ?? []) {
       var post = await getPostById(fav);
-      if (post.isAvailable) {
-        posts.add(post);
+      if (post != null) {
+        if (post.isAvailable) {
+          posts.add(post);
+        }
       }
     }
     return posts;

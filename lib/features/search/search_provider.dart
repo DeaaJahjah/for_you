@@ -41,6 +41,7 @@ class SearchProvider extends ChangeNotifier {
         for (var tag in tags) {
           for (var element in post.keywrds!) {
             if (element.toLowerCase() == tag.toLowerCase()) {
+              print('$element => $tag');
               tempPosts.add(post);
             }
           }

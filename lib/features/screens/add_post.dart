@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:currency_picker/currency_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,26 +7,25 @@ import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/config/enums/enums.dart';
 import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
 import 'package:for_you/core/features/auth/Services/file_services.dart';
-import 'package:for_you/core/features/auth/Services/post_db_service.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
+import 'package:for_you/core/features/services/post_db_service.dart';
+import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/drop_down_custom.dart';
 import 'package:for_you/core/features/widgets/elevated_button_custom.dart';
-import 'package:for_you/core/features/widgets/picked_image_network.dart';
 import 'package:for_you/core/features/widgets/picked_images_widget.dart';
 import 'package:for_you/core/features/widgets/text_field_custome.dart';
 import 'package:for_you/features/home_screen/home.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class EditPostScreen extends StatefulWidget {
-  static const String routeName = '/edit_post_screen';
-  const EditPostScreen({Key? key}) : super(key: key);
-
+class AddPostScreen extends StatefulWidget {
+  static const String routeName = '/add_post';
+  const AddPostScreen({Key? key}) : super(key: key);
   @override
-  State<EditPostScreen> createState() => _EditPostScreenState();
+  State<AddPostScreen> createState() => _AddPostScreenState();
 }
 
-class _EditPostScreenState extends State<EditPostScreen> {
+class _AddPostScreenState extends State<AddPostScreen> {
   TextEditingController addressController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController tagsController = TextEditingController();
@@ -42,15 +40,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
   bool visible = false;
   String postType = 'New';
   List<XFile> pickedimages = [];
-  List<String> photos = [];
-  String postId = '';
-  bool firstTime = false;
   _pickImage() async {
     final picker = ImagePicker();
     try {
       var picked = await picker.pickMultiImage();
       if (picked!.isNotEmpty) {
         pickedimages.addAll(picked);
+
         setState(() {});
       }
     } catch (e) {
@@ -59,44 +55,20 @@ class _EditPostScreenState extends State<EditPostScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    if (!firstTime) {
-      final Post post = ModalRoute.of(context)?.settings.arguments as Post;
-      addressController.text = post.address;
-      priceController.text = post.price;
-      descController.text = post.description;
-      selectedCategory1 = post.category1;
-      selectedCategory2 = post.category2;
-      postType = post.type;
-      category2 = categories[selectedCategory1] ?? [];
-      symbol = post.symbol;
-      print(symbol);
-      photos = post.photos!;
-      postId = post.id!;
-      if (post.keywrds != null) {
-        for (var element in post.keywrds!) {
-          tagsController.text += ('#' + element + ' ').toString();
-        }
-      }
-      firstTime = true;
-      setState(() {});
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    category2 = categories[selectedCategory1]!;
+
     return Scaffold(
       backgroundColor: dark,
+      bottomNavigationBar: CustomNavigationBar(index: 0),
       appBar: AppBar(
         backgroundColor: dark,
         elevation: 0.0,
-        title: const Text('Edit Post', style: appBarTextStyle),
+        title: const Text('Add post', style: appBarTextStyle),
         centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        scrollDirection: Axis.vertical,
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(100, 0, 100, 10),
@@ -121,10 +93,10 @@ class _EditPostScreenState extends State<EditPostScreen> {
           ),
           (pickedimages.isNotEmpty)
               ? SizedBox(
-                  width: MediaQuery.of(context).size.width,
                   height: 100,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
                     itemBuilder: (context, i) {
                       return PickedImagesWidget(
                         url: File(pickedimages[i].path),
@@ -138,31 +110,12 @@ class _EditPostScreenState extends State<EditPostScreen> {
                   ),
                 )
               : const SizedBox.shrink(),
-          (photos.isNotEmpty)
-              ? SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, i) {
-                      return PickedImageNetwok(
-                        url: photos[i],
-                        onTap: () {
-                          photos.removeAt(i);
-                          setState(() {});
-                        },
-                      );
-                    },
-                    itemCount: photos.length,
-                  ),
-                )
-              : const SizedBox.shrink(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 10, bottom: 20, top: 0),
-                child: Expanded(
+          Padding(
+            padding: const EdgeInsets.only(right: 10, bottom: 20, top: 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
                   flex: 1,
                   child: Row(
                     children: [
@@ -188,21 +141,23 @@ class _EditPostScreenState extends State<EditPostScreen> {
                     ],
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 2,
-                child: DropDownCustom(
-                  categories: category1,
-                  selectedItem: selectedCategory1,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedCategory1 = newValue!;
-                      selectedCategory2 = categories[selectedCategory1]!.first;
-                    });
-                  },
-                ),
-              )
-            ],
+                Expanded(
+                  flex: 2,
+                  child: DropDownCustom(
+                    categories: category1,
+                    selectedItem: selectedCategory1,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedCategory1 = newValue!;
+                        selectedCategory2 =
+                            categories[selectedCategory1]!.first;
+                        visible = true;
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 10),
           Row(
@@ -220,23 +175,25 @@ class _EditPostScreenState extends State<EditPostScreen> {
                   },
                 ),
               ),
-              Expanded(
-                child: DropDownCustom(
-                  categories: category2,
-                  selectedItem: selectedCategory2,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedCategory2 = newValue!;
-                    });
-                  },
-                ),
-              )
+              (visible)
+                  ? Expanded(
+                      child: DropDownCustom(
+                        categories: category2,
+                        selectedItem: selectedCategory2,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedCategory2 = newValue!;
+                          });
+                        },
+                      ),
+                    )
+                  : const SizedBox.shrink()
             ],
           ),
           const SizedBox(height: 20),
           Row(
             children: [
-              title('Adress'),
+              title('Address'),
               Expanded(
                   child:
                       TextFieldCustom(text: '', controller: addressController)),
@@ -259,8 +216,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       showSearchField: true,
                       showCurrencyName: true,
                       showCurrencyCode: true,
-                      theme: CurrencyPickerThemeData(backgroundColor: dark),
                       onSelect: (Currency currency) {
+                        print('Select currency: ${currency.symbol}');
                         symbol = currency.symbol;
                         setState(() {});
                       },
@@ -318,14 +275,14 @@ class _EditPostScreenState extends State<EditPostScreen> {
             return Center(
                 child: (value.authState == AuthState.notSet)
                     ? ElevatedButtonCustom(
-                        text: 'Update',
+                        text: 'Add',
                         color: purple,
                         onPressed: () async {
                           Provider.of<AuthSataProvider>(context, listen: false)
                               .changeAuthState(newState: AuthState.waiting);
-
                           List<String> keywords =
                               tagsController.text.split('#').toList();
+
                           String uid = FirebaseAuth.instance.currentUser!.uid;
 
                           List<String> images = [];
@@ -334,7 +291,6 @@ class _EditPostScreenState extends State<EditPostScreen> {
                               .uploadeimages(pickedimages, context);
 
                           Post post = Post(
-                              id: postId,
                               address: addressController.text,
                               category1: selectedCategory1,
                               category2: selectedCategory2,
@@ -345,14 +301,15 @@ class _EditPostScreenState extends State<EditPostScreen> {
                               type: postType,
                               userId: uid,
                               keywrds: keywords,
-                              photos: images + photos);
-                          await PostDbService().updatePost(post);
+                              photos: images);
+                          await PostDbService().addPost(post, context);
 
                           Provider.of<AuthSataProvider>(context, listen: false)
                               .changeAuthState(newState: AuthState.notSet);
-                          SnackBar snackBar =
-                              const SnackBar(content: Text('successfully'));
-                          Navigator.of(context).pushNamed(HomeScreen.routeName);
+                          SnackBar snackBar = const SnackBar(
+                              content: Text('Added successfully'));
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              HomeScreen.routeName, (route) => false);
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         })
                     : const CircularProgressIndicator(
@@ -363,14 +320,14 @@ class _EditPostScreenState extends State<EditPostScreen> {
       ),
     );
   }
-}
 
-title(String title) {
-  return SizedBox(
-    width: 80,
-    child: Text(
-      title,
-      style: style1,
-    ),
-  );
+  title(String title) {
+    return SizedBox(
+      width: 80,
+      child: Text(
+        title,
+        style: style1,
+      ),
+    );
+  }
 }

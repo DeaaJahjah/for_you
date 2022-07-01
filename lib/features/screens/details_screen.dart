@@ -2,11 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
-import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/post.dart';
-import 'package:for_you/core/features/auth/Services/post_db_service.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
-import 'package:for_you/core/features/report_db_service.dart';
+import 'package:for_you/core/features/services/post_db_service.dart';
+import 'package:for_you/core/features/services/report_db_service.dart';
+import 'package:for_you/core/features/services/user_db_services.dart';
 import 'package:for_you/core/features/widgets/similer_stuff.dart';
 import 'package:for_you/core/features/widgets/text_row.dart';
 import 'package:for_you/features/chat/services/stream_chat_service.dart';
@@ -49,7 +49,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           return false;
         },
         child: SafeArea(
-            child: FutureBuilder<Post>(
+            child: FutureBuilder<Post?>(
           future: PostDbService().getPostById(widget.postId!),
           builder: (context, snapshot) {
             if (snapshot.hasData) {

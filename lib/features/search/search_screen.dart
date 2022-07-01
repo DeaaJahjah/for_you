@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
-import 'package:for_you/core/features/auth/Services/user_db_services.dart';
 import 'package:for_you/core/features/auth/models/user_model.dart';
+import 'package:for_you/core/features/services/user_db_services.dart';
 import 'package:for_you/core/features/widgets/custom_navigation_bar.dart';
 import 'package:for_you/core/features/widgets/drop_down_custom.dart';
 import 'package:for_you/core/features/widgets/porduct_card.dart';
-import 'package:for_you/core/features/widgets/text_field_custome.dart';
+import 'package:for_you/core/features/widgets/text_field_new.dart';
 import 'package:for_you/features/search/data_provider.dart';
 import 'package:for_you/features/search/search_provider.dart';
 import 'package:provider/provider.dart';
@@ -21,9 +21,8 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController controller = TextEditingController();
   List<String> categoriesKeys = categories.keys.toList();
-
+  ScrollController controller = ScrollController();
   UserModel? userModel;
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -72,19 +71,40 @@ class _SearchScreenState extends State<SearchScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 22),
             )),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
-                child: SizedBox(
-                    height: 40,
-                    child: TextFieldCustom(
-                      text: 'What Are You looking for?',
-                      controller: controller,
-                      icon: Icons.search,
-                      onChanged: (value) {
-                        query = value;
+        body: ListView(
+          controller: controller,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
+              child: SizedBox(
+                  height: 45,
+                  child: TextFieldNew(
+                    text: 'What Are You looking for?',
+                    icon: Icons.search,
+                    onChanged: (value) {
+                      query = value;
+                      searchProvider.search(
+                          query: query,
+                          category: category,
+                          type: type,
+                          keywords: keywords,
+                          context: context);
+                    },
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: DropDownCustom(
+                      categories: typies,
+                      selectedItem: type,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          type = newValue!;
+                        });
                         searchProvider.search(
                             query: query,
                             category: category,
@@ -92,74 +112,18 @@ class _SearchScreenState extends State<SearchScreen> {
                             keywords: keywords,
                             context: context);
                       },
-                    )),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: DropDownCustom(
-                          categories: typies,
-                          selectedItem: type,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              type = newValue!;
-                            });
-                            searchProvider.search(
-                                query: query,
-                                category: category,
-                                type: type,
-                                keywords: keywords,
-                                context: context);
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        flex: 1,
-                        child: DropDownCustom(
-                          categories: categoriesKeys,
-                          selectedItem: category,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              category = newValue!;
-                            });
-                            searchProvider.search(
-                                query: query,
-                                category: category,
-                                type: type,
-                                keywords: keywords,
-                                context: context);
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(24, 20, 24, 0),
-                child: Text('Keywords', style: appBarTextStyle),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 10, 24, 20),
-                child: SizedBox(
-                    height: 40,
-                    child: TextFieldCustom(
-                      text: 'Ex: Clothes PC',
-                      controller: controller,
-                      icon: Icons.abc,
-                      onChanged: (value) {
-                        keywords = value;
+                  const SizedBox(width: 10),
+                  Expanded(
+                    flex: 1,
+                    child: DropDownCustom(
+                      categories: categoriesKeys,
+                      selectedItem: category,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          category = newValue!;
+                        });
                         searchProvider.search(
                             query: query,
                             category: category,
@@ -167,40 +131,75 @@ class _SearchScreenState extends State<SearchScreen> {
                             keywords: keywords,
                             context: context);
                       },
-                    )),
+                    ),
+                  ),
+                ],
               ),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(24, 20, 24, 0),
+              child: Text('Keywords', style: appBarTextStyle),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 10, 24, 20),
+              child: SizedBox(
+                  height: 45,
+                  child: TextFieldNew(
+                    text: 'Ex: Clothes PC',
+                    icon: Icons.abc,
+                    onChanged: (value) {
+                      keywords = value;
+                      searchProvider.search(
+                          query: query,
+                          category: category,
+                          type: type,
+                          keywords: keywords,
+                          context: context);
+                    },
+                  )),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(24, 20, 24, 0),
+              child: Text('Recent search', style: appBarTextStyle),
             ),
             (!loading)
-                ? Consumer<SearchProvider>(
-                    builder: (context, posts, child) => SliverGrid(
+                ? Consumer<SearchProvider>(builder: (context, posts, child) {
+                    if (posts.filteredPosts.isEmpty) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 40),
+                        child: Center(
+                          child: Text('No results found', style: style1),
+                        ),
+                      );
+                    }
+                    return SizedBox(
+                      // height: 200,
+                      child: GridView.builder(
+                        itemCount: posts.filteredPosts.length,
+                        controller: controller,
+                        shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                                // maxCrossAxisExtent: 200.0,
                                 maxCrossAxisExtent: 350,
                                 mainAxisSpacing: 20,
                                 crossAxisSpacing: 2,
-                                mainAxisExtent: 230
-
-                                //childAspectRatio: 4.0,
-                                ),
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int i) {
-                            var post = posts.filteredPosts[i];
-                            return ProductCard(
-                              postId: post.id!,
-                              imageProduct: post.photos!.first,
-                              address: post.address,
-                              isFavorite: userModel!.isFavouritePost(post.id!),
-                              type: post.type,
-                              price: post.price,
-                            );
-                          },
-                          childCount: posts.filteredPosts.length,
-                        )))
-                : const SliverToBoxAdapter(
-                    child: Center(
-                      child: Text('dadadadad'),
-                    ),
+                                mainAxisExtent: 250),
+                        itemBuilder: (BuildContext context, int i) {
+                          var post = posts.filteredPosts[i];
+                          return ProductCard(
+                            postId: post.id!,
+                            imageProduct: post.photos!.first,
+                            address: post.address,
+                            isFavorite: userModel!.isFavouritePost(post.id!),
+                            type: post.type,
+                            price: post.price,
+                          );
+                        },
+                      ),
+                    );
+                  })
+                : const Center(
+                    child: CircularProgressIndicator(color: purple),
                   )
           ],
         ));
