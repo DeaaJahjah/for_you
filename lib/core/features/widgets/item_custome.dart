@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 
 class ItemCustom extends StatelessWidget {
-  String? urlImage;
-  String? address;
-  String? type;
-  String? price;
+  String urlImage;
+  String address;
+  String type;
+  String price;
   Function()? onDelete;
   Function()? onEdit;
   ItemCustom(
       {Key? key,
-      this.urlImage,
-      this.address,
-      this.type,
-      this.price,
+      required this.urlImage,
+      required this.address,
+      required this.type,
+      required this.price,
       this.onDelete,
       this.onEdit})
       : super(key: key);
@@ -21,48 +21,50 @@ class ItemCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Stack(children: [
-        Container(
-          color: dark,
-          width: 300,
-          height: 120,
-        ),
-        Positioned(
-          top: 20,
-          child: Container(
-            width: 300,
-            height: 100,
+      child: Stack(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
                 color: purple,
                 border: Border.all(color: white.withOpacity(0.5), width: 1),
                 borderRadius: BorderRadius.circular(10)),
+            height: 130,
           ),
-        ),
-        Positioned(
-          left: 10,
-          bottom: 10,
-          child: SizedBox(
-            width: 100,
-            height: 100,
-            child: Image.network(urlImage!, fit: BoxFit.fill),
-          ),
-        ),
-        Positioned(
-          left: 125,
-          top: 20,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(address!, style: textStyle),
-                  Text(type!, style: textStyle),
-                  Text(price!, style: textStyle),
+                  Container(
+                    height: 130,
+                    width: 130,
+                    margin: const EdgeInsets.only(left: 5, right: 20),
+                    child: Image.network(urlImage, fit: BoxFit.fill),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        address,
+                        style: textStyle,
+                      ),
+                      Text(
+                        type,
+                        style: textStyle,
+                      ),
+                      Text(
+                        price,
+                        style: textStyle,
+                      ),
+                    ],
+                  ),
                 ],
               ),
-              const SizedBox(width: 45),
               Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
                       icon: const Icon(Icons.delete, color: white, size: 25),
@@ -75,9 +77,9 @@ class ItemCustom extends StatelessWidget {
                 ],
               )
             ],
-          ),
-        ),
-      ]),
+          )
+        ],
+      ),
     );
   }
 }

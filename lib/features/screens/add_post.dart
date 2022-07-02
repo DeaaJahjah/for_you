@@ -143,17 +143,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: DropDownCustom(
-                    categories: category1,
-                    selectedItem: selectedCategory1,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedCategory1 = newValue!;
-                        selectedCategory2 =
-                            categories[selectedCategory1]!.first;
-                        visible = true;
-                      });
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: DropDownCustom(
+                      categories: category1,
+                      selectedItem: selectedCategory1,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedCategory1 = newValue!;
+                          selectedCategory2 =
+                              categories[selectedCategory1]!.first;
+                          visible = true;
+                        });
+                      },
+                    ),
                   ),
                 )
               ],

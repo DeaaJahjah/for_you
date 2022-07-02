@@ -38,28 +38,41 @@ StreamChatThemeData streamChatTheme = StreamChatThemeData(
 
 var categories = {
   'Select': ['Select'],
-  'Clothes': ['Women', 'Man'],
-  'Sport': ['Machines', 'Clothes'],
-  'Electronic': ['Select', 'gfgf'],
-  'Cars': ['Select'],
-  'Furniture': ['Select'],
-  'kids': ['Select'],
-  'Accessories': ['Select'],
-  'Shoes': ['Select'],
-  'School supplies': ['Select'],
-  'Books': ['Select'],
+  'Clothes': ['Women', 'Man', 'kids'],
+  'Sport': ['Machines', 'Clothes', 'Games'],
+  'Electronic': [
+    'Mobiles',
+    'Laptop',
+    'Screens',
+    'Washing machine',
+    'Refrigerator',
+    'Conditioners'
+  ],
+  'Furniture': [
+    'Bed room',
+    'salon',
+    'living rooms',
+    'Panels',
+    'Samadiyat',
+    'kitchen furniture'
+  ],
+  'kids': ['Games', 'Clothes'],
+  'Accessories': ['Bags', 'Jewelry', 'Watches'],
+  'Shoes': ['Man', 'Women', 'Kids'],
+  'School supplies': ['Schoolbags', 'Clothes', 'Stationery'],
+  'Books': ['Scientific books', 'Religious books', 'Novels', 'Cultural books'],
 };
 
 List<String> typies = ['New', 'Used'];
 List<Category> categoriesHome = [
-  Category(name: 'All', urlImage: 'assets/images/kids.png', isSelected: true),
+  Category(name: 'All', urlImage: 'assets/images/all.png', isSelected: true),
   Category(
       name: 'Clothes',
-      urlImage: 'assets/images/furniture.png',
+      urlImage: 'assets/images/clothes.png',
       isSelected: false),
   Category(name: 'kids', urlImage: 'assets/images/kids.png', isSelected: false),
   Category(
-      name: 'Shoes', urlImage: 'assets/images/sport.png', isSelected: false),
+      name: 'Shoes', urlImage: 'assets/images/shoes.png', isSelected: false),
   Category(
       name: 'Sport', urlImage: 'assets/images/sport.png', isSelected: false),
   Category(
@@ -68,18 +81,16 @@ List<Category> categoriesHome = [
       isSelected: false),
   Category(
       name: 'Electronic',
-      urlImage: 'assets/images/kids.png',
+      urlImage: 'assets/images/electronics.png',
       isSelected: false),
   Category(
-      name: 'Cars', urlImage: 'assets/images/furniture.png', isSelected: false),
-  Category(
       name: 'Accessories',
-      urlImage: 'assets/images/furniture.png',
+      urlImage: 'assets/images/accessories.png',
       isSelected: false),
   Category(
       name: 'School supplies',
-      urlImage: 'assets/images/kids.png',
+      urlImage: 'assets/images/school.png',
       isSelected: false),
   Category(
-      name: 'Books', urlImage: 'assets/images/sport.png', isSelected: false),
+      name: 'Books', urlImage: 'assets/images/book.png', isSelected: false),
 ];

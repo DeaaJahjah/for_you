@@ -157,7 +157,7 @@ Widget titleWithIcon({required String title, required IconData icon}) {
         width: 5,
       ),
       Text(
-        title,
+        title.split(' ').first,
         style: const TextStyle(
           color: white,
           fontSize: 16,
