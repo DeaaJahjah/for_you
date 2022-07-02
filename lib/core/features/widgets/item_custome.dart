@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 
 class ItemCustom extends StatelessWidget {
-  String urlImage;
+  String? urlImage;
   String address;
   String type;
   String price;
@@ -39,11 +39,16 @@ class ItemCustom extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    height: 130,
-                    width: 130,
-                    margin: const EdgeInsets.only(left: 5, right: 20),
-                    child: Image.network(urlImage, fit: BoxFit.fill),
-                  ),
+                      height: 130,
+                      width: 130,
+                      margin: const EdgeInsets.only(left: 5, right: 20),
+                      child: (urlImage != null)
+                          ? Image.network(urlImage!, fit: BoxFit.fill)
+                          : const Center(
+                              child: Text(
+                              'No photo',
+                              style: style2,
+                            ))),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

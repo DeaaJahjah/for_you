@@ -34,7 +34,8 @@ class _MyPostsScreenState extends State<MyPostsScreen> {
                   itemBuilder: (context, index) {
                     var post = myPosts[index];
                     return ItemCustom(
-                      urlImage: post.photos!.first,
+                      urlImage:
+                          (post.photos!.isNotEmpty) ? post.photos!.first : null,
                       address: post.address.split(' ').first,
                       type: post.type,
                       price: post.price,

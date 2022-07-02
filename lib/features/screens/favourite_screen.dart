@@ -36,7 +36,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 itemBuilder: (context, index) {
                   var post = favorites[index];
                   return ItemCustom(
-                    urlImage: post.photos!.first,
+                    urlImage:
+                        (post.photos!.isNotEmpty) ? post.photos!.first : null,
                     address: post.address,
                     type: post.type,
                     price: post.price,
