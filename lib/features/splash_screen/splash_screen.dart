@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/screens/login_screen.dart';
 import 'package:for_you/features/home_screen/home.dart';
-import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 import 'package:for_you/core/config/extensions/firebase.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String routeName = '/';
@@ -22,7 +22,7 @@ class SplashScreen extends StatelessWidget {
         final client = StreamChatCore.of(context).client;
         await client.connectUser(
             User(id: context.userUid!), context.userToken!);
-        print('unRead messages ${client.state.totalUnreadCount}');
+
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } else {
         Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);

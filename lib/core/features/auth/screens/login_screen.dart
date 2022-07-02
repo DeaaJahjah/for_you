@@ -64,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 email: email.text,
                                 password: password.text,
                                 context: context);
+
                             if (creds != null) {
                               final client = StreamChatCore.of(context).client;
                               String? token = context.userToken;
@@ -73,10 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                   HomeScreen.routeName, (route) => false);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('User is empty')),
-                              );
                             }
                           } else {
                             const snakBar = SnackBar(

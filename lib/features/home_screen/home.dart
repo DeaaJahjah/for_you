@@ -198,21 +198,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   pinned: false,
                   snap: true,
                   floating: true,
-                  toolbarHeight: 210,
+                  toolbarHeight: 180,
                   leading: const SizedBox.shrink(),
                   flexibleSpace: FlexibleSpaceBar(
                     background: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
-                        //   child: SizedBox(
-                        //       height: 40,
-                        //       child: TextFieldCustom(
-                        //           text: 'Search',
-                        //           controller: controller,
-                        //           icon: Icons.search)),
-                        // ),
                         const Padding(
                           padding: EdgeInsets.all(8),
                           child: Text(
@@ -225,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 150,
+                          height: 120,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) => CategoryCard(
@@ -271,7 +262,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           itemBuilder: (context, i) => ProductCard(
                                 postId: posts[i].id!,
-                                imageProduct: posts[i].photos!.first,
+                                imageProduct: (posts[i].photos!.isNotEmpty)
+                                    ? posts[i].photos!.first
+                                    : null,
                                 address: posts[i].address,
                                 isFavorite:
                                     userModel!.isFavouritePost(posts[i].id!),

@@ -26,11 +26,10 @@ class UserDbServices {
 
       /// save the token as a display name
       /// and update user photo
-      List<Future<void>> futures = [
-        firebaseUser!.updateDisplayName(token.rawValue),
-        if (user.imgUrl != null) firebaseUser!.updatePhotoURL(user.imgUrl),
-      ];
-      await Future.wait(futures);
+
+      await firebaseUser!.updateDisplayName(token.rawValue);
+      // if (user.imgUrl != null)
+      // firebaseUser!.updatePhotoURL(user.imgUrl),
 
       /// connect user to [Stream SDK]
       await client.connectUser(

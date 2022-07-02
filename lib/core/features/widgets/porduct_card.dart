@@ -5,7 +5,7 @@ import 'package:for_you/features/screens/details_screen.dart';
 
 class ProductCard extends StatefulWidget {
   bool isFavorite;
-  final String imageProduct;
+  final String? imageProduct;
   final String type;
   final String price;
   final String address;
@@ -27,7 +27,6 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   @override
-  @override
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
@@ -38,7 +37,6 @@ class _ProductCardState extends State<ProductCard> {
                       )))
               .then((value) {
             setState(() {
-              print(value);
               widget.isFavorite = value;
             });
           });
@@ -52,7 +50,7 @@ class _ProductCardState extends State<ProductCard> {
             child: Stack(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 50, bottom: 30),
+                  margin: const EdgeInsets.only(top: 50, bottom: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: purple,
@@ -67,14 +65,21 @@ class _ProductCardState extends State<ProductCard> {
                         height: 150,
                         width: MediaQuery.of(context).size.width,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(
-                            widget.imageProduct,
-                            fit: BoxFit.cover,
+                            borderRadius: BorderRadius.circular(20),
+                            child: (widget.imageProduct != null)
+                                ? Image.network(
+                                    widget.imageProduct!,
+                                    fit: BoxFit.cover,
 
-                            //width: double.infinity,
-                          ),
-                        ),
+                                    //width: double.infinity,
+                                  )
+                                : Container(
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      'No Photo',
+                                      style: style2,
+                                    ),
+                                  )),
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(

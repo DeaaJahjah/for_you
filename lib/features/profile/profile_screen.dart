@@ -170,8 +170,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )),
                     ),
                     ElevatedButtonCustom(
-                      onPressed: () {
-                        FlutterFireAuthServices().signOut(context);
+                      onPressed: () async {
+                        await FlutterFireAuthServices().signOut(context);
                       },
                       text: 'Log out',
                       color: dark,

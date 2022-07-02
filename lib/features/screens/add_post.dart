@@ -284,7 +284,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                           Provider.of<AuthSataProvider>(context, listen: false)
                               .changeAuthState(newState: AuthState.waiting);
                           List<String> keywords =
-                              tagsController.text.split('#').toList();
+                              tagsController.text.split(' ').toList();
 
                           String uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -292,28 +292,40 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
                           images = await FileService()
                               .uploadeimages(pickedimages, context);
+                          if (images.isNotEmpty) {
+                            Post post = Post(
+                                address: addressController.text,
+                                category1: selectedCategory1,
+                                category2: selectedCategory2,
+                                description: descController.text,
+                                isAvailable: isSwitched,
+                                price: priceController.text,
+                                symbol: symbol,
+                                type: postType,
+                                userId: uid,
+                                keywrds: keywords,
+                                photos: images);
 
-                          Post post = Post(
-                              address: addressController.text,
-                              category1: selectedCategory1,
-                              category2: selectedCategory2,
-                              description: descController.text,
-                              isAvailable: isSwitched,
-                              price: priceController.text,
-                              symbol: symbol,
-                              type: postType,
-                              userId: uid,
-                              keywrds: keywords,
-                              photos: images);
-                          await PostDbService().addPost(post, context);
+                            await PostDbService().addPost(post, context);
 
-                          Provider.of<AuthSataProvider>(context, listen: false)
-                              .changeAuthState(newState: AuthState.notSet);
-                          SnackBar snackBar = const SnackBar(
-                              content: Text('Added successfully'));
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              HomeScreen.routeName, (route) => false);
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            Provider.of<AuthSataProvider>(context,
+                                    listen: false)
+                                .changeAuthState(newState: AuthState.notSet);
+                            SnackBar snackBar = const SnackBar(
+                                content: Text('Added successfully'));
+
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                HomeScreen.routeName, (route) => false);
+                          } else {
+                            SnackBar snackBar = const SnackBar(
+                                content: Text(
+                                    'field while uploading photos,try agin'));
+
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
                         })
                     : const CircularProgressIndicator(
                         color: purple,

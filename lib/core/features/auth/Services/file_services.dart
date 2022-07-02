@@ -2,10 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:for_you/core/config/enums/enums.dart';
-import 'package:for_you/core/features/auth/Providers/auth_state_provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 class FileService {
   FirebaseStorage storage = FirebaseStorage.instance;
@@ -22,24 +19,23 @@ class FileService {
       return 'error';
     }
   }
-   Future<List<String>> uploadeimages(
-     List<XFile>files, BuildContext context) async {
-        List<String> urls=[];
-    try {
-      for(int i=0;i<files.length;i++){
-        File file=File(files[i].path);
-        String name=files[i].path;
-      await storage.ref(name).putFile(file);
-       String url= await storage.ref(name).getDownloadURL();
-       urls.add(url);}
-       return urls;
 
+  Future<List<String>> uploadeimages(
+      List<XFile> files, BuildContext context) async {
+    List<String> urls = [];
+    try {
+      for (int i = 0; i < files.length; i++) {
+        File file = File(files[i].path);
+        String name = files[i].path;
+        await storage.ref(name).putFile(file);
+        String url = await storage.ref(name).getDownloadURL();
+        urls.add(url);
+      }
+      return urls;
     } on FirebaseException catch (e) {
-      print(e.toString());
       final snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return [];
     }
   }
 }
-

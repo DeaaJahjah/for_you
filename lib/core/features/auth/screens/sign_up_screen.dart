@@ -32,6 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String fileName = '';
   File? imageFile;
   var formKey = GlobalKey<FormState>();
+
   _pickImage() async {
     final picker = ImagePicker();
     try {
@@ -65,7 +66,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onTap: () {
                     _pickImage();
                     setState(() {});
-                    print(imageFile);
                   },
                   child: CircleAvatar(
                     backgroundColor: purple,
@@ -143,6 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           password: password.text,
                                           address: address.text,
                                           imgUrl: url);
+
                                       await UserDbServices()
                                           .creatUser(user, context);
                                     }

@@ -53,7 +53,9 @@ class _SimilerStuffState extends State<SimilerStuff> {
                               height: 300,
                               child: ProductCard(
                                 postId: posts[i].id!,
-                                imageProduct: posts[i].photos!.first,
+                                imageProduct: (posts[i].photos!.isNotEmpty)
+                                    ? posts[i].photos!.first
+                                    : null,
                                 address: posts[i].address,
                                 isFavorite:
                                     userModel!.isFavouritePost(posts[i].id!),

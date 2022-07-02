@@ -70,7 +70,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
       postType = post.type;
       category2 = categories[selectedCategory1] ?? [];
       symbol = post.symbol;
-      print(symbol);
+
       photos = post.photos!;
       postId = post.id!;
       if (post.keywrds != null) {
@@ -120,41 +120,56 @@ class _EditPostScreenState extends State<EditPostScreen> {
             ),
           ),
           (pickedimages.isNotEmpty)
-              ? SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, i) {
-                      return PickedImagesWidget(
-                        url: File(pickedimages[i].path),
-                        onTap: () {
-                          pickedimages.removeAt(i);
-                          setState(() {});
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('New', style: style2),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, i) {
+                          return PickedImagesWidget(
+                            url: File(pickedimages[i].path),
+                            onTap: () {
+                              pickedimages.removeAt(i);
+                              setState(() {});
+                            },
+                          );
                         },
-                      );
-                    },
-                    itemCount: pickedimages.length,
-                  ),
+                        itemCount: pickedimages.length,
+                      ),
+                    ),
+                  ],
                 )
               : const SizedBox.shrink(),
           (photos.isNotEmpty)
-              ? SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, i) {
-                      return PickedImageNetwok(
-                        url: photos[i],
-                        onTap: () {
-                          photos.removeAt(i);
-                          setState(() {});
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Old',
+                      style: style2,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, i) {
+                          return PickedImageNetwok(
+                            url: photos[i],
+                            onTap: () {
+                              photos.removeAt(i);
+                              setState(() {});
+                            },
+                          );
                         },
-                      );
-                    },
-                    itemCount: photos.length,
-                  ),
+                        itemCount: photos.length,
+                      ),
+                    ),
+                  ],
                 )
               : const SizedBox.shrink(),
           Row(
@@ -162,31 +177,30 @@ class _EditPostScreenState extends State<EditPostScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 10, bottom: 20, top: 0),
-                child: Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      const Text('Available', style: style1),
-                      const SizedBox(width: 10),
-                      FlutterSwitch(
-                          value: isSwitched,
-                          height: 30,
-                          width: 50,
-                          toggleSize: 20,
-                          borderRadius: 50,
-                          activeColor: dark,
-                          inactiveColor: white,
-                          toggleColor: purple,
-                          switchBorder: Border.all(
-                            color: purple,
-                          ),
-                          onToggle: (value) {
-                            setState(() {
-                              isSwitched = value;
-                            });
-                          }),
-                    ],
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text('Available', style: style1),
+                    const SizedBox(width: 10),
+                    FlutterSwitch(
+                        value: isSwitched,
+                        height: 30,
+                        width: 50,
+                        toggleSize: 20,
+                        borderRadius: 50,
+                        activeColor: dark,
+                        inactiveColor: white,
+                        toggleColor: purple,
+                        switchBorder: Border.all(
+                          color: purple,
+                        ),
+                        onToggle: (value) {
+                          setState(() {
+                            isSwitched = value;
+                          });
+                        }),
+                  ],
                 ),
               ),
               Expanded(
@@ -325,35 +339,46 @@ class _EditPostScreenState extends State<EditPostScreen> {
                               .changeAuthState(newState: AuthState.waiting);
 
                           List<String> keywords =
-                              tagsController.text.split('#').toList();
+                              tagsController.text.split(' ').toList();
                           String uid = FirebaseAuth.instance.currentUser!.uid;
 
                           List<String> images = [];
 
                           images = await FileService()
                               .uploadeimages(pickedimages, context);
+                          if (images.isNotEmpty) {
+                            Post post = Post(
+                                id: postId,
+                                address: addressController.text,
+                                category1: selectedCategory1,
+                                category2: selectedCategory2,
+                                description: descController.text,
+                                isAvailable: isSwitched,
+                                price: priceController.text,
+                                symbol: symbol,
+                                type: postType,
+                                userId: uid,
+                                keywrds: keywords,
+                                photos: images + photos);
+                            await PostDbService().updatePost(post);
 
-                          Post post = Post(
-                              id: postId,
-                              address: addressController.text,
-                              category1: selectedCategory1,
-                              category2: selectedCategory2,
-                              description: descController.text,
-                              isAvailable: isSwitched,
-                              price: priceController.text,
-                              symbol: symbol,
-                              type: postType,
-                              userId: uid,
-                              keywrds: keywords,
-                              photos: images + photos);
-                          await PostDbService().updatePost(post);
+                            Provider.of<AuthSataProvider>(context,
+                                    listen: false)
+                                .changeAuthState(newState: AuthState.notSet);
+                            SnackBar snackBar =
+                                const SnackBar(content: Text('successfully'));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            Navigator.of(context)
+                                .pushNamed(HomeScreen.routeName);
+                          } else {
+                            SnackBar snackBar = const SnackBar(
+                                content: Text(
+                                    'field while uploading photos,try agin'));
 
-                          Provider.of<AuthSataProvider>(context, listen: false)
-                              .changeAuthState(newState: AuthState.notSet);
-                          SnackBar snackBar =
-                              const SnackBar(content: Text('successfully'));
-                          Navigator.of(context).pushNamed(HomeScreen.routeName);
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
                         })
                     : const CircularProgressIndicator(
                         color: purple,
