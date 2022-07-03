@@ -188,7 +188,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           var post = posts.filteredPosts[i];
                           return ProductCard(
                             postId: post.id!,
-                            imageProduct: post.photos!.first,
+                            imageProduct: (post.photos!.isNotEmpty)
+                                ? post.photos!.first
+                                : null,
                             address: post.address,
                             isFavorite: userModel!.isFavouritePost(post.id!),
                             type: post.type,

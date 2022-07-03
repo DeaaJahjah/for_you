@@ -75,23 +75,36 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   children: [
                     Column(
                       children: [
-                        CarouselSlider(
-                          carouselController: _controller,
-                          options: CarouselOptions(
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                _current = index;
-                              });
-                            },
-                            autoPlay: true,
-                            aspectRatio: 1.3,
-                            enlargeCenterPage: true,
-                          ),
-                          items: imageSliders,
-                        ),
+                        (snapshot.data!.photos!.isNotEmpty)
+                            ? CarouselSlider(
+                                carouselController: _controller,
+                                options: CarouselOptions(
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _current = index;
+                                    });
+                                  },
+                                  autoPlay: true,
+                                  aspectRatio: 1.3,
+                                  enlargeCenterPage: true,
+                                ),
+                                items: imageSliders,
+                              )
+                            : SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 150,
+                                child: const Center(
+                                    child: Text(
+                                  'no photos',
+                                  style: style1,
+                                )),
+                              ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: imgList.asMap().entries.map((entry) {
+                          children: snapshot.data!.photos!
+                              .asMap()
+                              .entries
+                              .map((entry) {
                             return GestureDetector(
                               onTap: () => _controller.animateToPage(entry.key),
                               child: Container(

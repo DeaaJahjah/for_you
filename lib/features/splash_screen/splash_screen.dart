@@ -46,16 +46,6 @@ class SplashScreen extends StatelessWidget {
             height: 20,
           ),
           const CircularProgressIndicator(color: purple),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: const [
-          //
-          //     SizedBox(width: 10),
-          //     Text('اريضة ستنو شوي',
-          //         style: TextStyle(
-          //             fontSize: 16, color: Colors.white, fontFamily: font)),
-          //   ],
-          //)
         ],
       )),
     );
