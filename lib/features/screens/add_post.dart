@@ -281,17 +281,33 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         text: 'Add',
                         color: purple,
                         onPressed: () async {
+                          if (selectedCategory1 == 'Select' ||
+                              selectedCategory2 == 'Select') {
+                            var snackBar = const SnackBar(
+                              content: Text(
+                                'Please select the categories',
+                                style: style2,
+                              ),
+                              backgroundColor: Colors.red,
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            return;
+                          }
+                          //change the state to loading
                           Provider.of<AuthSataProvider>(context, listen: false)
                               .changeAuthState(newState: AuthState.waiting);
+                          // split the tags and add them to the list
                           List<String> keywords =
                               tagsController.text.split(' ').toList();
 
                           String uid = FirebaseAuth.instance.currentUser!.uid;
 
                           List<String> images = [];
-
+                          //upload the images to firebase storage and get the urls
                           images = await FileService()
                               .uploadeimages(pickedimages, context);
+                          //upload the post to firebase database
                           if (images.isNotEmpty) {
                             Post post = Post(
                                 address: addressController.text,
@@ -307,7 +323,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                 photos: images);
 
                             await PostDbService().addPost(post, context);
-
+                            //change the state to notSet
                             Provider.of<AuthSataProvider>(context,
                                     listen: false)
                                 .changeAuthState(newState: AuthState.notSet);

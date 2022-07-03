@@ -5,6 +5,7 @@ import 'package:for_you/core/config/constant/constant.dart';
 import 'package:for_you/core/features/auth/screens/login_screen.dart';
 import 'package:for_you/features/home_screen/home.dart';
 import 'package:for_you/core/config/extensions/firebase.dart';
+import 'package:show_up_animation/show_up_animation.dart';
 import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -31,8 +32,32 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: dark,
       body: Center(
-          child:
-              Hero(tag: 'log', child: Image.asset('assets/images/login.png'))),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ShowUpAnimation(
+              delayStart: const Duration(milliseconds: 50),
+              animationDuration: const Duration(seconds: 2),
+              curve: Curves.bounceInOut,
+              direction: Direction.vertical,
+              offset: 0.5,
+              child: Image.asset('assets/images/login.png')),
+          const SizedBox(
+            height: 20,
+          ),
+          const CircularProgressIndicator(color: purple),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: const [
+          //
+          //     SizedBox(width: 10),
+          //     Text('اريضة ستنو شوي',
+          //         style: TextStyle(
+          //             fontSize: 16, color: Colors.white, fontFamily: font)),
+          //   ],
+          //)
+        ],
+      )),
     );
   }
 }

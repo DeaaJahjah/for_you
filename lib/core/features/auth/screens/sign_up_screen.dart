@@ -121,38 +121,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: purple,
                             onPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                if (confirmPassword.text == password.text) {
-                                  var user = await FlutterFireAuthServices()
-                                      .signUp(
-                                          email: email.text,
-                                          password: password.text,
-                                          context: context);
-
-                                  String url = '';
-
-                                  if (user != null) {
-                                    if (imageFile != null) {
-                                      url = await FileService().uploadeimage(
-                                          fileName, imageFile!, context);
-                                    }
-
-                                    if (url != 'error') {
-                                      UserModel user = UserModel(
-                                          name: userName.text,
-                                          email: email.text,
-                                          password: password.text,
-                                          address: address.text,
-                                          imgUrl: url);
-
-                                      await UserDbServices()
-                                          .creatUser(user, context);
-                                    }
-                                  }
-                                } else {
+                                if (imageFile == null) {
+                                  var snackBar = const SnackBar(
+                                      content: Text('please select an image'));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                  return;
+                                }
+                                if (confirmPassword.text != password.text) {
                                   var snackBar = const SnackBar(
                                       content: Text('Password is incorrect'));
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);
+                                  return;
+                                }
+
+                                var user = await FlutterFireAuthServices()
+                                    .signUp(
+                                        email: email.text,
+                                        password: password.text,
+                                        context: context);
+
+                                String url = '';
+
+                                if (user != null) {
+                                  if (imageFile != null) {
+                                    url = await FileService().uploadeimage(
+                                        fileName, imageFile!, context);
+                                  }
+
+                                  if (url != 'error') {
+                                    UserModel user = UserModel(
+                                        name: userName.text,
+                                        email: email.text,
+                                        password: password.text,
+                                        address: address.text,
+                                        imgUrl: url);
+
+                                    await UserDbServices()
+                                        .creatUser(user, context);
+                                  }
                                 }
                               } else {
                                 var snackBar = const SnackBar(
